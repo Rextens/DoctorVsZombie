@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{1DB1B592-4B88-D925-07A4-93B17F65ABD7}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "DoctorVsZombie",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
