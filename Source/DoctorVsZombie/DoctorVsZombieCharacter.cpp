@@ -57,10 +57,17 @@ ADoctorVsZombieCharacter::ADoctorVsZombieCharacter()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void ADoctorVsZombieCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+
+}
+
+
 void ADoctorVsZombieCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
+	/*
 	if (CursorToWorld != nullptr)
 	{
 		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
@@ -87,4 +94,7 @@ void ADoctorVsZombieCharacter::Tick(float DeltaSeconds)
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
 	}
+	*/
 }
+
+

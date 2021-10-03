@@ -29,14 +29,48 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnSetDestinationPressed);
-	InputComponent->BindAction("SetDestination", IE_Released, this, &ADoctorVsZombiePlayerController::OnSetDestinationReleased);
+//	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnSetDestinationPressed);
+//	InputComponent->BindAction("SetDestination", IE_Released, this, &ADoctorVsZombiePlayerController::OnSetDestinationReleased);
+
+//	check(PlayerInputComponent);
+
+	InputComponent->BindAxis("MoveForward", this, &ADoctorVsZombiePlayerController::MoveForward);
+	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
 
 	// support touch devices 
-	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
-	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
+//	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
+//	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
 
-	InputComponent->BindAction("ResetVR", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnResetVR);
+//	InputComponent->BindAction("ResetVR", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnResetVR);
+}
+
+void ADoctorVsZombiePlayerController::MoveForward(float Value)
+{
+	if (Value != 0.0f)
+	{
+		// find out which way is forward
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		// get forward vector
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		GetPawn()->AddMovementInput(Direction, Value);
+	}
+}
+
+void ADoctorVsZombiePlayerController::MoveRight(float Value)
+{
+	if (Value != 0.0f)
+	{
+		// find out which way is right
+		const FRotator Rotation = GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		// get right vector 
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		// add movement in that direction
+		GetPawn()->AddMovementInput(Direction, Value);
+	}
 }
 
 void ADoctorVsZombiePlayerController::OnResetVR()
