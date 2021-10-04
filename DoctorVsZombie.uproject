@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{1DB1B592-4B88-D925-07A4-93B17F65ABD7}",
+	"EngineAssociation": "4.26",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,11 +11,6 @@
 		}
 	],
 	"Plugins": [
-		{
-			"Name": "ElectronicNodes",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/5cb2a394d0c04e73891762be4cbd7216"
-		},
 		{
 			"Name": "Pixel2D",
 			"Enabled": true,
