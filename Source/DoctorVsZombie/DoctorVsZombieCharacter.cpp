@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -16,6 +17,9 @@ ADoctorVsZombieCharacter::ADoctorVsZombieCharacter()
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+
+	MainCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("MainCollision"));
+	RootComponent = MainCollision;
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;

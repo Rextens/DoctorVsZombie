@@ -5,6 +5,9 @@
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "DoctorVsZombieCharacter.h"
+#include "Character/BaseCharacter.h"
+#include "Pixel2DComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Engine/World.h"
 
 ADoctorVsZombiePlayerController::ADoctorVsZombiePlayerController()
@@ -29,47 +32,63 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
 
-//	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnSetDestinationPressed);
-//	InputComponent->BindAction("SetDestination", IE_Released, this, &ADoctorVsZombiePlayerController::OnSetDestinationReleased);
-
-//	check(PlayerInputComponent);
-
 	InputComponent->BindAxis("MoveForward", this, &ADoctorVsZombiePlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
-
-	// support touch devices 
-//	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
-//	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &ADoctorVsZombiePlayerController::MoveToTouchLocation);
-
-//	InputComponent->BindAction("ResetVR", IE_Pressed, this, &ADoctorVsZombiePlayerController::OnResetVR);
 }
 
 void ADoctorVsZombiePlayerController::MoveForward(float Value)
 {
-	if (Value != 0.0f)
+	if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
 	{
-		// find out which way is forward
-		const FRotator Rotation = GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		if (Value != 0.0f)
+		{
+			// find out which way is forward
+			const FRotator Rotation = GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		GetPawn()->AddMovementInput(Direction, Value);
+			CharacterReference->IsMovingForwards = true;
+
+			// get forward vector
+			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			GetPawn()->AddMovementInput(Direction, Value);
+		}
+		else
+		{
+			CharacterReference->IsMovingForwards = false;
+		}
 	}
 }
 
 void ADoctorVsZombiePlayerController::MoveRight(float Value)
 {
-	if (Value != 0.0f)
+	if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
 	{
-		// find out which way is right
-		const FRotator Rotation = GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		if (Value != 0.0f)
+		{
+			// find out which way is right
+			const FRotator Rotation = GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		GetPawn()->AddMovementInput(Direction, Value);
+			CharacterReference->IsMovingRight = true;
+
+				// get right vector 
+			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+				// add movement in that direction
+			GetPawn()->AddMovementInput(Direction, Value);
+
+			if (Value > 0.0f)
+			{
+				CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+			}
+			else if(Value < 0.0f)
+			{
+				CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(180.0f, 90.0f, 270.0f));
+			}
+		}
+		else
+		{
+			CharacterReference->IsMovingRight = false;
+		}
 	}
 }
 
