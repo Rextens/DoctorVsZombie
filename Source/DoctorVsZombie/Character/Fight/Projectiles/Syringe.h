@@ -13,5 +13,6 @@ UCLASS()
 class DOCTORVSZOMBIE_API ASyringe : public AProjectile
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 };

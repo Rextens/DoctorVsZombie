@@ -8,6 +8,7 @@
 #include "Character/Fight/DamageTypes/RedMedicineDamageType.h"
 #include "Character/Fight/DamageTypes/GreenMedicineDamageType.h"
 #include "Character/Fight/DamageTypes/BlueMedicineDamageType.h"
+#include "Character/Fight/DamageTypes/SyringeDamageType.h"
 
 
 
@@ -21,6 +22,9 @@ void UDVZGameInstance::Init()
 	Weapons.Add(Syringe);
 	Weapons.Add(Medicine);
 
+	FDamage SyringeDamage;
+	SyringeDamage.ChoosenDamage = USyringeDamageType::StaticClass();
+
 	FDamage RedMedicine;
 	RedMedicine.ChoosenDamage = URedMedicineDamageType::StaticClass();
 	FDamage GreenMedicine;
@@ -28,6 +32,7 @@ void UDVZGameInstance::Init()
 	FDamage BlueMedicine;
 	BlueMedicine.ChoosenDamage = UBlueMedicineDamageType::StaticClass();
 
+	DamageTypes.Add(SyringeDamage);
 	DamageTypes.Add(RedMedicine);
 	DamageTypes.Add(GreenMedicine);
 	DamageTypes.Add(BlueMedicine);

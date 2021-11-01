@@ -19,6 +19,7 @@ AProjectile::AProjectile()
 		CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 		// Set the sphere's collision radius.
 		CollisionComponent->InitSphereRadius(15.0f);
+		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnHit);
 		// Set the root component to be the collision component.
 		RootComponent = CollisionComponent;
 	}

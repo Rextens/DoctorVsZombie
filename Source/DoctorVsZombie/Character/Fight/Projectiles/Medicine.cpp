@@ -2,4 +2,14 @@
 
 
 #include "Medicine.h"
+#include "Kismet/GameplayStatics.h"
+#include "../../../Enemies/EnemyBase.h"
+#include "Kismet/KismetSystemLibrary.h"
 
+void AMedicine::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (AEnemyBase* HitEnemy = Cast<AEnemyBase>(OtherActor))
+	{
+		UGameplayStatics::ApplyDamage(HitEnemy, 1, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, TypeOfDamage);
+	}
+}

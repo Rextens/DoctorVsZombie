@@ -25,6 +25,9 @@ public:
 
 	void FireInDirection(const FVector& ShootDirection);
 
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {};
+
 //VARIABLES
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	class USphereComponent* CollisionComponent;
@@ -34,4 +37,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* ProjectileLook;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UDamageType> TypeOfDamage;
 };

@@ -15,5 +15,5 @@ class DOCTORVSZOMBIE_API USyringeDamageType : public UDamageType, public IDamage
 {
 	GENERATED_BODY()
 public:
-	void DealDamage(AEnemyBase* Enemy);
+	virtual void DealDamage(AEnemyBase* Enemy) const override;
 };

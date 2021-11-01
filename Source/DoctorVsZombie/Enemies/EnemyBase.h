@@ -27,4 +27,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+		virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+//VARIABLES
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsSleeping = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float SleepingTimer = 0;
 };

@@ -13,5 +13,7 @@ UCLASS()
 class DOCTORVSZOMBIE_API AGreenZombie : public AZombieBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) override;
 };

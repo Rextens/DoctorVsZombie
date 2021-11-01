@@ -17,5 +17,5 @@ class IDamageInterface
     GENERATED_BODY()
 
 public:
-    virtual void DealDamage(AEnemyBase* Enemy) {};
+    virtual void DealDamage(AEnemyBase* Enemy) const {};
 };
