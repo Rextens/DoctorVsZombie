@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "DoctorVsZombiePlayerController.generated.h"
 
+DECLARE_DELEGATE_OneParam(FChooseWeaponDelegate, const int32);
+
 UCLASS()
 class ADoctorVsZombiePlayerController : public APlayerController
 {
@@ -41,6 +43,10 @@ protected:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+
+	void ChooseDamage(const int32 ChoosenNumber);
+
+	void Shot();
 };
 
 

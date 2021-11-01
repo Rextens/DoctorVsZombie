@@ -5,8 +5,10 @@
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "DoctorVsZombieCharacter.h"
-#include "Character/BaseCharacter.h"
+#include "Character/DoctorCharacter.h"
 #include "Pixel2DComponent.h"
+#include "DVZGameInstance.h"
+#include "DoctorState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Engine/World.h"
 
@@ -34,6 +36,13 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("MoveForward", this, &ADoctorVsZombiePlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
+
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseDarts", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 0);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 1);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine2", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 2);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine3", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 3);
+
+	InputComponent->BindAction("Shot", IE_Pressed, this, &ADoctorVsZombiePlayerController::Shot);
 }
 
 void ADoctorVsZombiePlayerController::MoveForward(float Value)
@@ -89,6 +98,36 @@ void ADoctorVsZombiePlayerController::MoveRight(float Value)
 		{
 			CharacterReference->IsMovingRight = false;
 		}
+	}
+}
+
+void ADoctorVsZombiePlayerController::ChooseDamage(const int32 ChoosenNumber)
+{
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		if (ADoctorState* DoctorState = Cast<ADoctorState>(PlayerState))
+		{
+			if (ChoosenNumber == 0)
+			{
+				DoctorState->ChosenWeapon = 0;
+				DoctorState->ChosenDamageType = 0;
+			}
+			else
+			{
+				DoctorState->ChosenWeapon = 1;
+				DoctorState->ChosenDamageType = ChoosenNumber;
+			}
+		}
+	}
+}
+
+void ADoctorVsZombiePlayerController::Shot()
+{
+	if (ADoctorCharacter* CharacterReference = Cast<ADoctorCharacter>(GetPawn()))
+	{
+		FHitResult HitResult;
+		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
+		CharacterReference->Fire(HitResult.Location);
 	}
 }
 

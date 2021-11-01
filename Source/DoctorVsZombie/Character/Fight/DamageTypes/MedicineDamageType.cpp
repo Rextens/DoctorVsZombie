@@ -3,3 +3,7 @@
 
 #include "MedicineDamageType.h"
 
+void UMedicineDamageType::DealDamage(AEnemyBase* Enemy)
+{
+
+}

@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Pixel2DComponent.h"
 #include "Components/DecalComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 
@@ -12,9 +13,10 @@
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	GetCapsuleComponent()->SetWorldRotation(FRotator(270.0f, 0.0f, 0.0f));
 
 	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
-	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
 	CharacterAnimation->SetupAttachment(RootComponent);
 
 	PrimaryActorTick.bCanEverTick = true;

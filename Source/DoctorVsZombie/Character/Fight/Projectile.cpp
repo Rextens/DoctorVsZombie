@@ -2,6 +2,9 @@
 
 
 #include "Projectile.h"
+#include "Components/SphereComponent.h"
+#include "Pixel2DComponent.h"
+#include "PaperFlipbook.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
@@ -25,12 +28,22 @@ AProjectile::AProjectile()
 		// Use this component to drive this projectile's movement.
 		ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 		ProjectileMovementComponent->SetUpdatedComponent(CollisionComponent);
-		ProjectileMovementComponent->InitialSpeed = 3000.0f;
-		ProjectileMovementComponent->MaxSpeed = 3000.0f;
+		ProjectileMovementComponent->InitialSpeed = 1500.0f;
+		ProjectileMovementComponent->MaxSpeed = 1500.0f;
 		ProjectileMovementComponent->bRotationFollowsVelocity = true;
 		ProjectileMovementComponent->bShouldBounce = true;
 		ProjectileMovementComponent->Bounciness = 0.3f;
 		ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
+	}
+
+	ProjectileLook = CreateDefaultSubobject<UPixel2DComponent>(TEXT("ProjectileLook"));
+	
+	if (ProjectileLook)
+	{
+		ProjectileLook->SetupAttachment(RootComponent);
+		ProjectileLook->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+		static ConstructorHelpers::FObjectFinder<UPaperFlipbook> ProjectileLookObject(TEXT("/Game/TopDownCPP/Animation/Flipbooks/Doctor_Idle"));
+		ProjectileLook->SetFlipbook(ProjectileLookObject.Object);
 	}
 }
 

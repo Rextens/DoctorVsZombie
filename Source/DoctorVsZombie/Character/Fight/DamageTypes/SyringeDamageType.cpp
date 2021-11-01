@@ -3,3 +3,7 @@
 
 #include "SyringeDamageType.h"
 
+void USyringeDamageType::DealDamage(AEnemyBase* Enemy)
+{
+
+}

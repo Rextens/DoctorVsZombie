@@ -31,4 +31,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Movement)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UPixel2DComponent* ProjectileLook;
 };
