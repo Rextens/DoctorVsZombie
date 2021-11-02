@@ -3,15 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/DamageType.h"
+#include "MedicineDamageType.h"
 #include "BlueMedicineDamageType.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DOCTORVSZOMBIE_API UBlueMedicineDamageType : public UDamageType
+class DOCTORVSZOMBIE_API UBlueMedicineDamageType : public UMedicineDamageType
 {
 	GENERATED_BODY()
-	
+
+public:
+	UBlueMedicineDamageType();
 };

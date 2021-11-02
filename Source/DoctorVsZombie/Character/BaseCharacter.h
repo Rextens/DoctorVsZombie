@@ -35,4 +35,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsMovingRight = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 HealthPoints = 0;
 };

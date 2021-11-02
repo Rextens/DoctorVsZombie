@@ -6,6 +6,14 @@
 #include "../EnemyBase.h"
 #include "ZombieBase.generated.h"
 
+UENUM(BlueprintType)
+enum class ZombieType : uint8 {
+    NONE = 0,
+    RED = 1,
+    GREEN = 2,
+    BLUE = 3
+};
+
 /**
  * 
  */
@@ -13,5 +21,13 @@ UCLASS()
 class DOCTORVSZOMBIE_API AZombieBase : public AEnemyBase
 {
 	GENERATED_BODY()
-	
+
+public:
+    virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
+    virtual void Tick(float DeltaTime) override;
+
+    void Delay();
+//VARIABLES
+    ZombieType ZombieColor;
 };

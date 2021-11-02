@@ -3,6 +3,8 @@
 
 #include "EnemyBase.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Pixel2DComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "../Character/Fight/DamageTypes/DamageInterface.h"
 
 // Sets default values
@@ -29,6 +31,11 @@ void AEnemyBase::Tick(float DeltaTime)
 	if (IsSleeping)
 	{
 		SleepingTimer += DeltaTime;
+	}
+
+	if (HealthPoints <= 0)
+	{
+		Destroy();
 	}
 }
 

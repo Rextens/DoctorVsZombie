@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/DamageType.h"
 #include "DamageInterface.h"
+#include "../../../Enemies/Zombies/ZombieBase.h"
 #include "MedicineDamageType.generated.h"
 
 /**
@@ -15,5 +16,8 @@ class DOCTORVSZOMBIE_API UMedicineDamageType : public UDamageType, public IDamag
 {
 	GENERATED_BODY()
 public:
-	void DealDamage(AEnemyBase* Enemy);
+	virtual void DealDamage(AEnemyBase* Enemy) const override;
+
+//VARIABLES
+	ZombieType MedicineType;
 };

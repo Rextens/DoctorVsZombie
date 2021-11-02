@@ -3,3 +3,7 @@
 
 #include "BlueMedicineDamageType.h"
 
+UBlueMedicineDamageType::UBlueMedicineDamageType()
+{
+	MedicineType = ZombieType::BLUE;
+}
