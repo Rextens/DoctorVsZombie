@@ -10,4 +10,6 @@ void USyringeDamageType::DealDamage(AEnemyBase* Enemy) const
 	Enemy->SleepingTimer = 0.0f;
 
 	UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
+
+	
 }

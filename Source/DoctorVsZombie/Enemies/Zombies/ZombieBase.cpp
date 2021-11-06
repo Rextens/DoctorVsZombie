@@ -14,20 +14,19 @@ void AZombieBase::TakeDamage(AActor* DamagedActor, float Damage, const UDamageTy
 	FTimerHandle UnusedHandle;
 	GetWorldTimerManager().SetTimer(UnusedHandle, this, &AZombieBase::Delay, 0.1, false);
 	//CharacterAnimation->AddImpulse(FVector(1000.0f, 1000.0f, 0.0f));
-	GetCharacterMovement()->Mass = 1000;
 	//GetCharacterMovement()->AddImpulse(FVector(1000.0f, 0.0f, 0.0f), true);
 }
 
 void AZombieBase::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	if (HealthPoints <= 0)
 	{
 		FRotator Rotation(0.0f, 0.0f, 0.0f);
 		FActorSpawnParameters SpawnInfo;
 		GetWorld()->SpawnActor<AHumanBase>(GetActorLocation(), Rotation, SpawnInfo);
 	}
-
-	Super::Tick(DeltaTime);
 }
 
 void AZombieBase::Delay()

@@ -63,8 +63,9 @@ void ADoctorCharacter::Fire(const FVector& DestinationLocation)
 					SpawnParams.Instigator = GetInstigator();
 
 					// Spawn the projectile at the muzzle.
-					AProjectile* Projectile = World->SpawnActor<AProjectile>(GameInstanceReference->Weapons[DoctorState->ChosenWeapon].ChoosenWeapon, GetActorLocation(), Direction.Rotation(), SpawnParams);
+					AProjectile* Projectile = World->SpawnActor<AProjectile>(GameInstanceReference->Weapons[DoctorState->ChosenWeapon].ChoosenWeapon, GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
 					Projectile->TypeOfDamage = GameInstanceReference->DamageTypes[DoctorState->ChosenDamageType].ChoosenDamage;
+					Projectile->AfterDamageTypeSet();
 
 					if (Projectile)
 					{
