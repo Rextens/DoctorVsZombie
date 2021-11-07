@@ -3,6 +3,7 @@
 
 #include "HumanBase.h"
 #include "PaperFlipbook.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "../DVZGameInstance.h"
 #include "Pixel2DComponent.h"
 
@@ -26,6 +27,4 @@ void AHumanBase::BeginPlay()
 		GameInstanceReference->Humans.Add(this);
 	}
 }
-
-
 

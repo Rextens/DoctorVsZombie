@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "../Humans/HumanBase.h"
 #include "Zombies/GreenZombie.h"
+#include "../DVZGameInstance.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "../Character/Fight/DamageTypes/DamageInterface.h"
 
@@ -65,8 +66,15 @@ void AEnemyBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UP
 {
 	if (AHumanBase* HumanReference = Cast<AHumanBase>(OtherActor))
 	{
-		FActorSpawnParameters SpawnInfo;
-		GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo);
-		HumanReference->Destroy();
+		if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+		{
+			FActorSpawnParameters SpawnInfo;
+			GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo);
+			HumanReference->Destroy();
+
+			int32 index = 0;
+			GameInstanceReference->Humans.Find(HumanReference, index);
+			GameInstanceReference->Humans.RemoveAt(index);
+		}
 	}
 }
