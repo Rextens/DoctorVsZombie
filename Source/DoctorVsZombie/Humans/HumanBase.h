@@ -15,4 +15,6 @@ class DOCTORVSZOMBIE_API AHumanBase : public ABaseCharacter
 	GENERATED_BODY()
 public:
 	AHumanBase();
+
+	virtual void BeginPlay() override;
 };

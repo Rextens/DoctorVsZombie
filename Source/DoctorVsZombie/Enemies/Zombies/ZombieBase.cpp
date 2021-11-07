@@ -4,6 +4,7 @@
 #include "ZombieBase.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "../../Humans/HumanBase.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pixel2DComponent.h"
 
@@ -33,3 +34,5 @@ void AZombieBase::Delay()
 {
 	CharacterAnimation->SetSpriteColor(FLinearColor::White);
 }
+
+

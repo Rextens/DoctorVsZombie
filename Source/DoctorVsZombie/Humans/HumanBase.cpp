@@ -3,6 +3,7 @@
 
 #include "HumanBase.h"
 #include "PaperFlipbook.h"
+#include "../DVZGameInstance.h"
 #include "Pixel2DComponent.h"
 
 AHumanBase::AHumanBase()
@@ -15,3 +16,16 @@ AHumanBase::AHumanBase()
 		CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
 	}
 }
+
+void AHumanBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		GameInstanceReference->Humans.Add(this);
+	}
+}
+
+
+

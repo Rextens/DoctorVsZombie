@@ -30,6 +30,10 @@ public:
 	UFUNCTION()
 		virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+
 //VARIABLES
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

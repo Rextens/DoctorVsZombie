@@ -4,6 +4,9 @@
 #include "EnemyBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Pixel2DComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "../Humans/HumanBase.h"
+#include "Zombies/GreenZombie.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "../Character/Fight/DamageTypes/DamageInterface.h"
 
@@ -12,8 +15,11 @@ AEnemyBase::AEnemyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bCanAffectNavigationGeneration = true;	
 
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
+	//GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::OnHit);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AEnemyBase::OnHit);
 }
 
 // Called when the game starts or when spawned
@@ -52,5 +58,15 @@ void AEnemyBase::TakeDamage(AActor* DamagedActor, float Damage, const UDamageTyp
 	if (ImplementedInterface)
 	{
 		ImplementedInterface->DealDamage(this);
+	}
+}
+
+void AEnemyBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (AHumanBase* HumanReference = Cast<AHumanBase>(OtherActor))
+	{
+		FActorSpawnParameters SpawnInfo;
+		GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo);
+		HumanReference->Destroy();
 	}
 }

@@ -37,4 +37,7 @@ public:
 
 	TArray<FWeapon> Weapons;
 	TArray<FDamage> DamageTypes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class AHumanBase*> Humans;
 };

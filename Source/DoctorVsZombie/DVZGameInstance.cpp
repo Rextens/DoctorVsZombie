@@ -2,6 +2,8 @@
 
 
 #include "DVZGameInstance.h"
+#include "Humans/HumanBase.h"
+
 #include "Character/Fight/Projectiles/Syringe.h"
 #include "Character/Fight/Projectiles/Medicine.h"
 
