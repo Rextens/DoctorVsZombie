@@ -8,6 +8,20 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pixel2DComponent.h"
 
+AZombieBase::AZombieBase()
+{
+	static ConstructorHelpers::FClassFinder<AController> AiController(TEXT("Blueprint'/Game/NPC/ZombieController'"));
+
+	AIControllerClass = AiController.Class;
+	bUseControllerRotationYaw = false;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	FNavAvoidanceMask test;
+	test.bGroup1 = false;
+
+	GetCharacterMovement()->GroupsToIgnore = test;
+}
+
 void AZombieBase::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser);

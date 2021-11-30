@@ -23,6 +23,8 @@ class DOCTORVSZOMBIE_API AZombieBase : public AEnemyBase
 	GENERATED_BODY()
 
 public:
+    AZombieBase();
+
     virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
     virtual void Tick(float DeltaTime) override;

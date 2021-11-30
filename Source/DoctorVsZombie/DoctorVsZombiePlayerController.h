@@ -43,6 +43,7 @@ protected:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void Scroll(float Value);
 
 	void ChooseDamage(const int32 ChoosenNumber);
 

@@ -3,39 +3,61 @@
 
 #include "DVZGameInstance.h"
 #include "Humans/HumanBase.h"
+#include "Enemies/EnemyBase.h"
 
-#include "Character/Fight/Projectiles/Syringe.h"
-#include "Character/Fight/Projectiles/Medicine.h"
+#include "Character/Fight/Weapons/SyringeWeapon.h"
+#include "Character/Fight/Weapons/Bottle.h"
+
+#include "Character/Fight/Weapons/SyringeWeapon.h"
+#include "Character/Fight/Weapons/Bottle.h"
 
 #include "Character/Fight/DamageTypes/RedMedicineDamageType.h"
 #include "Character/Fight/DamageTypes/GreenMedicineDamageType.h"
 #include "Character/Fight/DamageTypes/BlueMedicineDamageType.h"
 #include "Character/Fight/DamageTypes/SyringeDamageType.h"
 
+#include "Character/Equipment/Items/RedMedicine.h"
+#include "Character/Equipment/Items/GreenMedicine.h"
+#include "Character/Equipment/Items/BlueMedicine.h"
+#include "Character/Equipment/Items/SyringePistol.h"
+
+#include "World/ItemDropsManager.h"
 
 
 void UDVZGameInstance::Init()
 {
-	FWeapon Syringe;
-	Syringe.ChoosenWeapon = ASyringe::StaticClass();
-	FWeapon Medicine;
-	Medicine.ChoosenWeapon = AMedicine::StaticClass();
+	RegisterWeapon("Syringe", USyringeWeapon::StaticClass());
+	RegisterWeapon("Bottle", UBottle::StaticClass());
 
-	Weapons.Add(Syringe);
-	Weapons.Add(Medicine);
+	RegisterDamageType("SyringeDamageType", USyringeDamageType::StaticClass());
+	RegisterDamageType("BlueMedicine", UBlueMedicineDamageType::StaticClass());
+	RegisterDamageType("GreenMedicine", UGreenMedicineDamageType::StaticClass());
+	RegisterDamageType("RedMedicine", URedMedicineDamageType::StaticClass());
 
-	FDamage SyringeDamage;
-	SyringeDamage.ChoosenDamage = USyringeDamageType::StaticClass();
 
-	FDamage RedMedicine;
-	RedMedicine.ChoosenDamage = URedMedicineDamageType::StaticClass();
-	FDamage GreenMedicine;
-	GreenMedicine.ChoosenDamage = UGreenMedicineDamageType::StaticClass();
-	FDamage BlueMedicine;
-	BlueMedicine.ChoosenDamage = UBlueMedicineDamageType::StaticClass();
+	RegisterItem("RedMedicine", URedMedicine::StaticClass());
+	RegisterItem("GreenMedicine", UGreenMedicine::StaticClass());
+	RegisterItem("BlueMedicine", UBlueMedicine::StaticClass());
+	RegisterItem("SyringePistol", USyringePistol::StaticClass());
+}
 
-	DamageTypes.Add(SyringeDamage);
-	DamageTypes.Add(RedMedicine);
-	DamageTypes.Add(GreenMedicine);
-	DamageTypes.Add(BlueMedicine);
+void UDVZGameInstance::RegisterItem(FName ItemId, TSubclassOf<class UItem> ItemClass)
+{
+	FItemRegistry ItemRegistry;
+	ItemRegistry.RegisteredItem = NewObject<UItem>(this, ItemClass);
+	RegisteredItems.Add(FName(*(GameParish.ToString() + "." + ItemId.ToString())), ItemRegistry);
+}
+
+void UDVZGameInstance::RegisterDamageType(const FName& DamageTypeId, TSubclassOf<class UDamageType> ItemClass)
+{
+	FDamage DamageType;
+	DamageType.ChoosenDamage = ItemClass;
+	DamageTypes.Add(FName(*(GameParish.ToString() + "." + DamageTypeId.ToString())), DamageType);
+}
+
+void UDVZGameInstance::RegisterWeapon(const FName& WeaponId, TSubclassOf<UWeapon> ChoosenWeapon)
+{
+	FWeaponRegistry Weapon;
+	Weapon.Weapon = NewObject<UWeapon>(this, ChoosenWeapon);
+	Weapons.Add(FName(*(GameParish.ToString() + "." + WeaponId.ToString())), Weapon);
 }

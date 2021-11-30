@@ -42,18 +42,17 @@ void ADoctorCharacter::Fire(const FVector& DestinationLocation)
 	{
 		if (ADoctorState* DoctorState = Cast<ADoctorState>(GetPlayerState()))
 		{
+		//	GameInstanceReference->Weapons[DoctorState->ChosenWeapon].Weapon->Shoot(GameInstanceReference, DoctorState, DestinationLocation);
+		}
+	}
+	/*
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		if (ADoctorState* DoctorState = Cast<ADoctorState>(GetPlayerState()))
+		{
 			if (ProjectileClass)
 			{
-				// Set MuzzleOffset to spawn projectiles slightly in front of the camera.
-				//MuzzleOffset.Set(100.0f, 0.0f, 0.0f);
-
-				// Transform MuzzleOffset from camera space to world space.
-
 				FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), DestinationLocation);
-
-				//FVector MuzzleLocation = GetActorLocation() + FTransform(Direction).TransformVector( * 10.0f);
-
-				// Skew the aim to be slightly upwards.
 
 				UWorld* World = GetWorld();
 				if (World)
@@ -63,7 +62,7 @@ void ADoctorCharacter::Fire(const FVector& DestinationLocation)
 					SpawnParams.Instigator = GetInstigator();
 
 					// Spawn the projectile at the muzzle.
-					AProjectile* Projectile = World->SpawnActor<AProjectile>(GameInstanceReference->Weapons[DoctorState->ChosenWeapon].ChoosenWeapon, GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
+					AProjectile* Projectile = World->SpawnActor<AProjectile>(GameInstanceReference->Weapons[DoctorState->ChosenWeapon].Weapon->ProjectileClass, GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
 					Projectile->TypeOfDamage = GameInstanceReference->DamageTypes[DoctorState->ChosenDamageType].ChoosenDamage;
 					Projectile->AfterDamageTypeSet();
 
@@ -76,4 +75,5 @@ void ADoctorCharacter::Fire(const FVector& DestinationLocation)
 			}
 		}
 	}
+	*/
 }

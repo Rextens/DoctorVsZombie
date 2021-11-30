@@ -3,8 +3,10 @@
 #include "DoctorVsZombiePlayerController.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
+#include "Character/Fight/DamageTypes/BlueMedicineDamageType.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "DoctorVsZombieCharacter.h"
+#include "Character/Equipment/Item.h"
 #include "Character/DoctorCharacter.h"
 #include "Pixel2DComponent.h"
 #include "DVZGameInstance.h"
@@ -36,6 +38,7 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis("MoveForward", this, &ADoctorVsZombiePlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
+	InputComponent->BindAxis("Scroll", this, &ADoctorVsZombiePlayerController::Scroll);
 
 	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseDarts", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 0);
 	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 1);
@@ -101,33 +104,79 @@ void ADoctorVsZombiePlayerController::MoveRight(float Value)
 	}
 }
 
+void ADoctorVsZombiePlayerController::Scroll(float Value)
+{
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		if (ADoctorState* DoctorState = Cast<ADoctorState>(PlayerState))
+		{
+			if (Value > 0)
+			{
+				++DoctorState->ChosenItem;
+			}
+			else if (Value < 0)
+			{
+				--DoctorState->ChosenItem;
+			}
+
+			if (DoctorState->ChosenItem < 0)
+			{
+				DoctorState->ChosenItem = 9;
+			}
+			else if (DoctorState->ChosenItem > 9)
+			{
+				DoctorState->ChosenItem = 0;
+			}
+		}
+	}
+}
+
 void ADoctorVsZombiePlayerController::ChooseDamage(const int32 ChoosenNumber)
 {
 	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
 		if (ADoctorState* DoctorState = Cast<ADoctorState>(PlayerState))
 		{
+			DoctorState->ChosenItem = ChoosenNumber;
+
+			/*
 			if (ChoosenNumber == 0)
 			{
 				DoctorState->ChosenWeapon = 0;
-				DoctorState->ChosenDamageType = 0;
+			//	DoctorState->ChosenDamageType = 0;
 			}
-			else
+			else if(ChoosenNumber = 1)
 			{
 				DoctorState->ChosenWeapon = 1;
-				DoctorState->ChosenDamageType = ChoosenNumber;
+			//	DoctorState->ChosenDamageType = ChoosenNumber;
 			}
+			*/
 		}
 	}
 }
 
 void ADoctorVsZombiePlayerController::Shot()
 {
-	if (ADoctorCharacter* CharacterReference = Cast<ADoctorCharacter>(GetPawn()))
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
+		if (ADoctorState* DoctorState = Cast<ADoctorState>(PlayerState))
+		{
+			if (DoctorState->Equipment.Num() > DoctorState->ChosenItem)
+			{
+				if (GameInstanceReference->RegisteredItems.Contains(DoctorState->Equipment[DoctorState->ChosenItem].ItemId))
+				{
+					GameInstanceReference->RegisteredItems[DoctorState->Equipment[DoctorState->ChosenItem].ItemId].RegisteredItem->Use(Cast<ADoctorCharacter>(GetPawn()), DoctorState->Equipment[DoctorState->ChosenItem], DoctorState->ChosenItem);
+					//UKismetSystemLibrary::PrintString(GetWorld(), GameInstanceReference->Weapons["DVZ.Bottle"].Weapon->abc);
+				}
+			}
+		}
+		/*
 		FHitResult HitResult;
 		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
 		CharacterReference->Fire(HitResult.Location);
+		*/
+
+
 	}
 }
 

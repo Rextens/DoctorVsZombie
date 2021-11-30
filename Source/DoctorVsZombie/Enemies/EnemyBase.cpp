@@ -11,6 +11,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "../Character/Fight/DamageTypes/DamageInterface.h"
 
+#include "../World/ItemDropsManager.h"
+
 // Sets default values
 AEnemyBase::AEnemyBase()
 {
@@ -21,6 +23,7 @@ AEnemyBase::AEnemyBase()
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
 	//GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::OnHit);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AEnemyBase::OnHit);
+
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +31,10 @@ void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		GameInstanceReference->Enemies.Add(this);
+	}
 }
 
 // Called every frame
@@ -69,12 +76,31 @@ void AEnemyBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UP
 		if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 		{
 			FActorSpawnParameters SpawnInfo;
-			GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo);
-			HumanReference->Destroy();
+			if (GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo))
+			{
+				HumanReference->Destroy();
 
-			int32 index = 0;
-			GameInstanceReference->Humans.Find(HumanReference, index);
-			GameInstanceReference->Humans.RemoveAt(index);
+				int32 index = 0;
+				GameInstanceReference->Humans.Find(HumanReference, index);
+				GameInstanceReference->Humans.RemoveAt(index);
+			}
+		}
+	}
+}
+
+void AEnemyBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		int32 index = 0;
+		if (GameInstanceReference->Enemies.Find(this, index))
+		{
+			GameInstanceReference->Enemies.RemoveAt(index);
+		}
+
+		if (GameInstanceReference->ItemDropManagerReference)
+		{
+			GameInstanceReference->ItemDropManagerReference->DropItem(GetActorLocation(), "DVZ.BlueMedicine");
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include "PaperFlipbook.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "../DVZGameInstance.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Pixel2DComponent.h"
 
 AHumanBase::AHumanBase()
@@ -16,6 +17,23 @@ AHumanBase::AHumanBase()
 		CharacterAnimation->SetFlipbook(HumanAnimation.Object);
 		CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
 	}
+
+	static ConstructorHelpers::FClassFinder<AController> AiController(TEXT("Blueprint'/Game/NPC/Humans/HumanController'"));
+
+	AIControllerClass = AiController.Class;
+	bUseControllerRotationYaw = false;
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	FNavAvoidanceMask test;
+	test.bGroup0 = false;
+
+	FNavAvoidanceMask test1;
+	test1.bGroup1 = false;
+
+	GetCharacterMovement()->GroupsToIgnore = test;
+
+	GetCharacterMovement()->AvoidanceGroup = test1;
 }
 
 void AHumanBase::BeginPlay()

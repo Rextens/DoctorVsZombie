@@ -20,4 +20,6 @@ public:
 
 //VARIABLES
 	ZombieType MedicineType;
+
+	FString abc = "ddd";
 };
