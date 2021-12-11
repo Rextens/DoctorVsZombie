@@ -33,8 +33,8 @@ public:
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
-	UFUNCTION()
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	//UFUNCTION()
+	//virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 //VARIABLES
 

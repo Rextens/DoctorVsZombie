@@ -4,6 +4,10 @@
 #include "GreenZombie.h"
 #include "Pixel2DComponent.h"
 #include "PaperFlipbook.h"
+
+#include "../../DVZGameInstance.h"
+#include "../../World/ItemDropsManager.h"
+
 #include "Kismet/KismetSystemLibrary.h"
 
 AGreenZombie::AGreenZombie()
@@ -19,4 +23,21 @@ AGreenZombie::AGreenZombie()
 void AGreenZombie::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser);
+}
+
+void AGreenZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		int32 index = 0;
+		if (GameInstanceReference->Enemies.Find(this, index))
+		{
+			GameInstanceReference->Enemies.RemoveAt(index);
+		}
+
+		if (GameInstanceReference->ItemDropManagerReference)
+		{
+			GameInstanceReference->ItemDropManagerReference->DropItem(GetActorLocation(), "DVZ.BlueMedicine");
+		}
+	}
 }

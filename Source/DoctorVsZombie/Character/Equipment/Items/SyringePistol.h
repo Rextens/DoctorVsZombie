@@ -15,5 +15,20 @@ class DOCTORVSZOMBIE_API USyringePistol : public UItem
 	GENERATED_BODY()
 
 public:
+	USyringePistol();
+
 	virtual void Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index) override;
+
+private:
+	UFUNCTION()
+		void AfterAnimation(class ADoctorCharacter* Caller);
+
+	UFUNCTION()
+		void Shoot(class ADoctorCharacter* Caller);
+
+	//VARIABLES
+private:
+	FVector TempLocation;
+
+	class USoundCue* DartGunSound;
 };

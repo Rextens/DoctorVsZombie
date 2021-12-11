@@ -2,13 +2,21 @@
 
 
 #include "Medicine.h"
+
+#include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "Sound/SoundCue.h"
+
 #include "../../../Enemies/EnemyBase.h"
-#include "Pixel2DComponent.h"
+#include "../../DoctorCharacter.h"
 #include "../DamageTypes/RedMedicineDamageType.h"
 #include "../DamageTypes/GreenMedicineDamageType.h"
 #include "../DamageTypes/BlueMedicineDamageType.h"
+
+#include "Pixel2DComponent.h"
 #include "PaperFlipbook.h"
+
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -17,6 +25,14 @@ AMedicine::AMedicine()
 	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> RedPotionAnimation(TEXT("/Game/TopDownCPP/Animation/Flipbooks/Arsenal/RedPotion_Flipbook"));
 	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> GreenPotionAnimation(TEXT("/Game/TopDownCPP/Animation/Flipbooks/Arsenal/GreenPotion_Flipbook"));
 	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> BluePotionAnimation(TEXT("/Game/TopDownCPP/Animation/Flipbooks/Arsenal/BluePotion_Flipbook"));
+	
+	static ConstructorHelpers::FObjectFinder<USoundCue> BreakingBottleSoundFinder(TEXT("SoundCue'/Game/Sounds/Weapons/Bottle/Glass_shatter_debris_08_Cue.Glass_shatter_debris_08_Cue'"));
+
+	if (BreakingBottleSoundFinder.Object)
+	{
+		BreakingBottleSound = BreakingBottleSoundFinder.Object;
+	}
+
 
 	RedPotion = RedPotionAnimation.Object;
 	GreenPotion = GreenPotionAnimation.Object;
@@ -37,11 +53,14 @@ void AMedicine::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, U
 	if (AEnemyBase* HitEnemy = Cast<AEnemyBase>(OtherActor))
 	{
 		UGameplayStatics::ApplyDamage(HitEnemy, 1, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, TypeOfDamage);
-	
+	}
+
+	if (!(Cast<ADoctorCharacter>(OtherActor)))
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), BreakingBottleSound, 10.0f);
 		Destroy();
 	}
 }
-
 
 
 void AMedicine::AfterDamageTypeSet()

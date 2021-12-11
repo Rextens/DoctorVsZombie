@@ -3,10 +3,17 @@
 
 #include "DoctorCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Fight/Projectile.h"
+
 #include "../DVZGameInstance.h"
 #include "../DoctorState.h"
+#include "../Callback.h"
+#include "../Saves/Character/CharacterSave.h"
+
+#include "Fight/Projectile.h"
+
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+
 #include "Camera/CameraComponent.h"
 
 ADoctorCharacter::ADoctorCharacter()
@@ -76,4 +83,12 @@ void ADoctorCharacter::Fire(const FVector& DestinationLocation)
 		}
 	}
 	*/
+}
+
+void ADoctorCharacter::ThrowAnimation(UObject* Caller)
+{
+	if (Cast<ICallback>(Caller))
+	{
+		
+	}
 }

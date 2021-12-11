@@ -15,10 +15,20 @@ struct FItemStack
 {
 	GENERATED_BODY()
 
-		UPROPERTY()
-		FName ItemId;
+	UPROPERTY()
+	FName ItemId;
 
+	UPROPERTY()
 	int32 Stack = 0;
+};
+
+USTRUCT(BlueprintType)
+struct FTestItemStack : public FItemStack
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+		int32 testval = 10;
 };
 
 UCLASS()
@@ -33,7 +43,8 @@ public:
 	virtual void Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index);
 
 	static bool AddToStack(UPARAM(ref) TArray<FItemStack>& ItemList, const int32& Index, const int32& Amount);
-//VARIABLES
 
+//VARIABLES
+public:
 	class UPaperSprite* ItemIcon;
 };

@@ -2,8 +2,18 @@
 
 
 #include "MedicineDamageType.h"
+
 #include "Pixel2DComponent.h"
+
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+
+#include "Sound/SoundCue.h"
+
+UMedicineDamageType::UMedicineDamageType()
+{
+
+}
 
 void UMedicineDamageType::DealDamage(AEnemyBase* Enemy) const
 {

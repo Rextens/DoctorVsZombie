@@ -15,4 +15,14 @@ class DOCTORVSZOMBIE_API URedMedicine : public UItem
 	GENERATED_BODY()
 public:
 	virtual void Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index) override;
+
+private:
+	UFUNCTION()
+		void AfterAnimation(class ADoctorCharacter* Caller);
+
+	UFUNCTION()
+		void Throw(class ADoctorCharacter* Caller);
+	//VARIABLES
+private:
+	FVector TempLocation;
 };

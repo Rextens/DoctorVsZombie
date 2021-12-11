@@ -26,4 +26,6 @@ void ADoctorState::BeginPlay()
 	Item3.ItemId = "DVZ.GreenMedicine";
 	Item3.Stack = 10;
 	Equipment.Add(Item3);
+
+	test = NewObject<UWeapon>();
 }

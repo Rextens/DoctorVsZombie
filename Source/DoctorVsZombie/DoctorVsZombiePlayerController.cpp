@@ -10,6 +10,7 @@
 #include "Character/DoctorCharacter.h"
 #include "Pixel2DComponent.h"
 #include "DVZGameInstance.h"
+#include "DoctorInstance.h"
 #include "DoctorState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Engine/World.h"
@@ -40,66 +41,78 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
 	InputComponent->BindAxis("Scroll", this, &ADoctorVsZombiePlayerController::Scroll);
 
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseDarts", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 0);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 1);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine2", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 2);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseMedicine3", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 3);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 0);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem2", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 1);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem3", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 2);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem4", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 3);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem5", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 4);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem6", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 5);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem7", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 6);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem8", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 7);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem9", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 8);
+
 
 	InputComponent->BindAction("Shot", IE_Pressed, this, &ADoctorVsZombiePlayerController::Shot);
 }
 
 void ADoctorVsZombiePlayerController::MoveForward(float Value)
 {
-	if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
+	if (CanMove)
 	{
-		if (Value != 0.0f)
+		if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
 		{
-			// find out which way is forward
-			const FRotator Rotation = GetControlRotation();
-			const FRotator YawRotation(0, Rotation.Yaw, 0);
+			if (Value != 0.0f)
+			{
+				// find out which way is forward
+				const FRotator Rotation = GetControlRotation();
+				const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-			CharacterReference->IsMovingForwards = true;
+				CharacterReference->IsMovingForwards = true;
 
-			// get forward vector
-			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-			GetPawn()->AddMovementInput(Direction, Value);
-		}
-		else
-		{
-			CharacterReference->IsMovingForwards = false;
+				// get forward vector
+				const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+				GetPawn()->AddMovementInput(Direction, Value);
+			}
+			else
+			{
+				CharacterReference->IsMovingForwards = false;
+			}
 		}
 	}
 }
 
 void ADoctorVsZombiePlayerController::MoveRight(float Value)
 {
-	if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
+	if (CanMove)
 	{
-		if (Value != 0.0f)
+		if (ABaseCharacter* CharacterReference = Cast<ABaseCharacter>(GetPawn()))
 		{
-			// find out which way is right
-			const FRotator Rotation = GetControlRotation();
-			const FRotator YawRotation(0, Rotation.Yaw, 0);
+			if (Value != 0.0f)
+			{
+				// find out which way is right
+				const FRotator Rotation = GetControlRotation();
+				const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-			CharacterReference->IsMovingRight = true;
+				CharacterReference->IsMovingRight = true;
 
 				// get right vector 
-			const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+				const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 				// add movement in that direction
-			GetPawn()->AddMovementInput(Direction, Value);
+				GetPawn()->AddMovementInput(Direction, Value);
 
-			if (Value > 0.0f)
-			{
-				CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+				if (Value > 0.0f)
+				{
+					CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+				}
+				else if (Value < 0.0f)
+				{
+					CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(180.0f, 90.0f, 270.0f));
+				}
 			}
-			else if(Value < 0.0f)
+			else
 			{
-				CharacterReference->CharacterAnimation->SetWorldRotation(FRotator(180.0f, 90.0f, 270.0f));
+				CharacterReference->IsMovingRight = false;
 			}
-		}
-		else
-		{
-			CharacterReference->IsMovingRight = false;
 		}
 	}
 }
@@ -121,9 +134,9 @@ void ADoctorVsZombiePlayerController::Scroll(float Value)
 
 			if (DoctorState->ChosenItem < 0)
 			{
-				DoctorState->ChosenItem = 9;
+				DoctorState->ChosenItem = 8;
 			}
-			else if (DoctorState->ChosenItem > 9)
+			else if (DoctorState->ChosenItem > 8)
 			{
 				DoctorState->ChosenItem = 0;
 			}
@@ -166,7 +179,7 @@ void ADoctorVsZombiePlayerController::Shot()
 				if (GameInstanceReference->RegisteredItems.Contains(DoctorState->Equipment[DoctorState->ChosenItem].ItemId))
 				{
 					GameInstanceReference->RegisteredItems[DoctorState->Equipment[DoctorState->ChosenItem].ItemId].RegisteredItem->Use(Cast<ADoctorCharacter>(GetPawn()), DoctorState->Equipment[DoctorState->ChosenItem], DoctorState->ChosenItem);
-					//UKismetSystemLibrary::PrintString(GetWorld(), GameInstanceReference->Weapons["DVZ.Bottle"].Weapon->abc);
+					//UKismetSystemLibrary::PrintString(GetWorld(), GameInstanceReference->test->abc);
 				}
 			}
 		}
@@ -175,8 +188,6 @@ void ADoctorVsZombiePlayerController::Shot()
 		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
 		CharacterReference->Fire(HitResult.Location);
 		*/
-
-
 	}
 }
 

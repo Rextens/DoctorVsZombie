@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class DOCTORVSZOMBIE_API UWeapon : public UObject
 {
 	GENERATED_BODY()
@@ -20,5 +20,6 @@ public:
 //VARIABLES
 	TSubclassOf<class AProjectile> ProjectileClass;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString abc = "ddddddddddddd";
 };

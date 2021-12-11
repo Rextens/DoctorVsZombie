@@ -52,6 +52,12 @@ public:
 	void RegisterDamageType(const FName& DamageTypeId, TSubclassOf<class UDamageType> ItemClass);
 	void RegisterWeapon(const FName& WeaponId, TSubclassOf<class UWeapon> ChoosenWeapon);
 
+	UFUNCTION()
+	void SaveGame(const FString& InstanceName);
+
+	UFUNCTION()
+	void LoadGame(const FString& InstanceName);
+
 //VARAIBLES
 
 	FName GameParish = "DVZ";
@@ -68,9 +74,17 @@ public:
 	TArray<class AEnemyBase*> Enemies;
 
 	//TMap<FName, UItem*> RegisteredItems;
+
+	UPROPERTY()
 	TMap<FName, FItemRegistry> RegisteredItems;
+	UPROPERTY()
 	TMap<FName, FDamage> DamageTypes;
+	UPROPERTY()
 	TMap<FName, FWeaponRegistry> Weapons;
 
+	UPROPERTY()
+	UWeapon *test;
+
+	UPROPERTY()
 	class AItemDropsManager* ItemDropManagerReference;
 };

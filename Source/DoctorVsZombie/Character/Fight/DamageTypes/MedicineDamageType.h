@@ -16,10 +16,10 @@ class DOCTORVSZOMBIE_API UMedicineDamageType : public UDamageType, public IDamag
 {
 	GENERATED_BODY()
 public:
+	UMedicineDamageType();
+
 	virtual void DealDamage(AEnemyBase* Enemy) const override;
 
 //VARIABLES
 	ZombieType MedicineType;
-
-	FString abc = "ddd";
 };

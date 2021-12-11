@@ -26,15 +26,26 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void StopThrowing();
+
 //VARIABLES
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* CharacterAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UAudioComponent* Audio;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsMovingForwards = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsMovingRight = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsThrowing = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsShooting = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 HealthPoints = 0;

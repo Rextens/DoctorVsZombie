@@ -18,4 +18,9 @@ public:
 	AGreenZombie();
 
 	virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) override;
+
+protected:
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "Character/Fight/Weapons/Weapon.h"
 #include "DVZGameInstance.h"
 #include "DoctorState.generated.h"
 
@@ -42,9 +43,9 @@ public:
 
 	virtual void BeginPlay() override;
 
-	int32 ChosenWeapon = 0;
-	int32 ChosenDamageType = 0;
 	int32 ChosenItem = 0;
+
+	int32 HealthPoints = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemStack> Equipment;
@@ -54,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FMedicineStack> Medicines;
+
+	UPROPERTY()
+	UWeapon* test;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//TArray<FItemStack> Equipment;

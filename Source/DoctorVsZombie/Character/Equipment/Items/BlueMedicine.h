@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Item.h"
+#include "../../../Callback.h"
 #include "BlueMedicine.generated.h"
 
 /**
@@ -18,5 +19,14 @@ public:
 
 public:
 	virtual void Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index) override;
+
+private:
+	UFUNCTION()
+	void AfterAnimation(class ADoctorCharacter* Caller);
+
+	UFUNCTION()
+		void Throw(class ADoctorCharacter* Caller);
 //VARIABLES
+private:
+	FVector TempLocation;
 };

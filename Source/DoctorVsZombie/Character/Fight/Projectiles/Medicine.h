@@ -27,4 +27,6 @@ private:
 	class UPaperFlipbook* RedPotion;
 	class UPaperFlipbook* GreenPotion;
 	class UPaperFlipbook* BluePotion;
+
+	class USoundCue* BreakingBottleSound;
 };

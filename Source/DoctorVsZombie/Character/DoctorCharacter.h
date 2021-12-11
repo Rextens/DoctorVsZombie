@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"
+#include "Fight/Weapons/Weapon.h"
+#include "../Widgets/UniversalWidget.h"
 #include "DoctorCharacter.generated.h"
 
 /**
@@ -34,6 +36,9 @@ public:
 	UFUNCTION()
 	void Fire(const FVector& DestinationLocation);
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AProjectile> ProjectileClass;
+	UFUNCTION()
+	void ThrowAnimation(UObject* Caller);
+
+//VARIABLES
+	TArray<UUniversalWidget*> OpenWidgets;
 };

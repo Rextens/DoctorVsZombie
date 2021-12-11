@@ -48,6 +48,10 @@ protected:
 	void ChooseDamage(const int32 ChoosenNumber);
 
 	void Shot();
+
+//Variables
+public:
+	bool CanMove = true;
 };
 
 

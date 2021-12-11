@@ -2,10 +2,13 @@
 
 
 #include "BaseCharacter.h"
-#include "Components/BoxComponent.h"
 #include "Pixel2DComponent.h"
+
+#include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
+
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 
@@ -18,6 +21,8 @@ ABaseCharacter::ABaseCharacter()
 	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
 	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
 	CharacterAnimation->SetupAttachment(RootComponent);
+
+	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -41,5 +46,9 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
 
+void ABaseCharacter::StopThrowing()
+{
+	IsThrowing = false;
 }
