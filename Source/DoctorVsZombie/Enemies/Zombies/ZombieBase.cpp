@@ -10,7 +10,7 @@
 
 AZombieBase::AZombieBase()
 {
-	static ConstructorHelpers::FClassFinder<AController> AiController(TEXT("Blueprint'/Game/NPC/ZombieController'"));
+	static ConstructorHelpers::FClassFinder<AController> AiController(TEXT("Blueprint'/Game/NPC/Controllers/ZombieController'"));
 
 	AIControllerClass = AiController.Class;
 	bUseControllerRotationYaw = false;

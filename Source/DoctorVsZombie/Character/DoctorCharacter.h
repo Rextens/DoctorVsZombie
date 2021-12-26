@@ -40,5 +40,4 @@ public:
 	void ThrowAnimation(UObject* Caller);
 
 //VARIABLES
-	TArray<UUniversalWidget*> OpenWidgets;
 };

@@ -13,12 +13,33 @@
 #include "DoctorInstance.h"
 #include "DoctorState.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "Widgets/UniversalWidget.h"
+#include "Widgets/Equipment/Equipment.h"
+
 #include "Engine/World.h"
 
 ADoctorVsZombiePlayerController::ADoctorVsZombiePlayerController()
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
+
+	ConstructorHelpers::FClassFinder<UUserWidget> EquipmentWidgetReference(TEXT("/Game/Widgets/Equipment/Equipment"));
+
+	if (EquipmentWidgetReference.Class)
+	{
+		EquipmentClass = EquipmentWidgetReference.Class;
+	}
+}
+
+void ADoctorVsZombiePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (EquipmentClass)
+	{
+		EquipmentWidget = CreateWidget<UEquipment>(this, EquipmentClass);
+	}
 }
 
 void ADoctorVsZombiePlayerController::PlayerTick(float DeltaTime)
@@ -51,6 +72,7 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem8", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 7);
 	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem9", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 8);
 
+	InputComponent->BindAction("OpenEquipment/CloseGui", IE_Pressed, this, &ADoctorVsZombiePlayerController::OpenCloseEquipment);
 
 	InputComponent->BindAction("Shot", IE_Pressed, this, &ADoctorVsZombiePlayerController::Shot);
 }
@@ -188,6 +210,23 @@ void ADoctorVsZombiePlayerController::Shot()
 		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
 		CharacterReference->Fire(HitResult.Location);
 		*/
+	}
+}
+
+void ADoctorVsZombiePlayerController::OpenCloseEquipment()
+{
+	if (OpenWidgets.Num() == 0)
+	{
+		EquipmentWidget->Open();
+	}
+	else
+	{
+		for (int32 i = 0; i < OpenWidgets.Num(); ++i)
+		{
+			OpenWidgets[i]->Close();
+		}
+
+		OpenWidgets.Empty();
 	}
 }
 

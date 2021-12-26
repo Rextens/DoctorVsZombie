@@ -8,6 +8,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "../../../Enemies/EnemyBase.h"
+
 #include "Sound/SoundCue.h"
 
 UMedicineDamageType::UMedicineDamageType()
@@ -15,7 +17,7 @@ UMedicineDamageType::UMedicineDamageType()
 
 }
 
-void UMedicineDamageType::DealDamage(AEnemyBase* Enemy) const
+void UMedicineDamageType::DealDamage(ABaseCharacter* Enemy) const
 {
 	if (AZombieBase* Zombie = Cast<AZombieBase>(Enemy))
 	{

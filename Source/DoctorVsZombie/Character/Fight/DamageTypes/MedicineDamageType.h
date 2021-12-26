@@ -18,7 +18,7 @@ class DOCTORVSZOMBIE_API UMedicineDamageType : public UDamageType, public IDamag
 public:
 	UMedicineDamageType();
 
-	virtual void DealDamage(AEnemyBase* Enemy) const override;
+	virtual void DealDamage(ABaseCharacter* Enemy) const override;
 
 //VARIABLES
 	ZombieType MedicineType;

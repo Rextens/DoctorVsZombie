@@ -19,8 +19,8 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		class ADoctorCharacter* PlayerCharacterReference;;
+		class ADoctorVsZombiePlayerController* PlayerControllerReference;;
 
-	virtual void close();
-	virtual void open();
+	virtual void Close();
+	virtual void Open();
 };

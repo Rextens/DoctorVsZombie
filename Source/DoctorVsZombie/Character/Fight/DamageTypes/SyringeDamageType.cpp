@@ -2,14 +2,16 @@
 
 
 #include "SyringeDamageType.h"
+#include "../../../Enemies/EnemyBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void USyringeDamageType::DealDamage(AEnemyBase* Enemy) const
+void USyringeDamageType::DealDamage(ABaseCharacter* Enemy) const
 {
-	Enemy->IsSleeping = true;
-	Enemy->SleepingTimer = 0.0f;
+	if (AEnemyBase* EnemyReference = Cast<AEnemyBase>(Enemy))
+	{
+		EnemyReference->IsSleeping = true;
+		EnemyReference->SleepingTimer = 0.0f;
 
-	UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
-
-	
+		UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
+	}
 }

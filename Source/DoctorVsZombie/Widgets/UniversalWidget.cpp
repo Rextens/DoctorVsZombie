@@ -2,23 +2,23 @@
 
 
 #include "UniversalWidget.h"
-#include "../Character/DoctorCharacter.h"
+#include "../DoctorVsZombiePlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 void UUniversalWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	PlayerCharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	PlayerControllerReference = Cast<ADoctorVsZombiePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
-void UUniversalWidget::close()
+void UUniversalWidget::Close()
 {
 	this->RemoveFromParent();
 }
 
-void UUniversalWidget::open()
+void UUniversalWidget::Open()
 {
 	this->AddToViewport();
-	PlayerCharacterReference->OpenWidgets.Add(this);
+	PlayerControllerReference->OpenWidgets.Add(this);
 }

@@ -28,6 +28,9 @@ public:
 
 	void StopThrowing();
 
+	UFUNCTION()
+	virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
 //VARIABLES
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* CharacterAnimation;

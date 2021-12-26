@@ -14,8 +14,12 @@ class DOCTORVSZOMBIE_API ARedZombie : public AZombieBase
 {
 	GENERATED_BODY()
 
+public:
+	ARedZombie();
+
 protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };

@@ -2,9 +2,27 @@
 
 
 #include "RedZombie.h"
+#include "Pixel2DComponent.h"
+#include "PaperFlipbook.h"
+
+#include "GreenZombie.h"
+
+#include "../../Humans/HumanBase.h"
 
 #include "../../DVZGameInstance.h"
 #include "../../World/ItemDropsManager.h"
+
+ARedZombie::ARedZombie()
+{
+	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> GreenZombieFlipbook(TEXT("/Game/TopDownCPP/Animation/Spirtes/Zombie/Zombie1"));
+	CharacterAnimation->SetFlipbook(GreenZombieFlipbook.Object);
+	CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
+
+	CharacterAnimation->SetSpriteColor(FLinearColor::Red);
+
+	ZombieColor = ZombieType::RED;
+	HealthPoints = 2;
+}
 
 void ARedZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
@@ -18,7 +36,26 @@ void ARedZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 		if (GameInstanceReference->ItemDropManagerReference)
 		{
-			GameInstanceReference->ItemDropManagerReference->DropItem(GetActorLocation(), "DVZ.GreenMedicine");
+			GameInstanceReference->ItemDropManagerReference->DropItem(GetActorLocation(), "DVZ.BlueMedicine");
+		}
+	}
+}
+
+void ARedZombie::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (AHumanBase* HumanReference = Cast<AHumanBase>(OtherActor))
+	{
+		if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+		{
+			FActorSpawnParameters SpawnInfo;
+			if (GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo))
+			{
+				HumanReference->Destroy();
+
+				int32 index = 0;
+				GameInstanceReference->Humans.Find(HumanReference, index);
+				GameInstanceReference->Humans.RemoveAt(index);
+			}
 		}
 	}
 }

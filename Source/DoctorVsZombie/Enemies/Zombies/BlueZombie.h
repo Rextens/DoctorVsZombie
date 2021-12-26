@@ -13,9 +13,13 @@ UCLASS()
 class DOCTORVSZOMBIE_API ABlueZombie : public AZombieBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	ABlueZombie();
+
 protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };

@@ -16,6 +16,8 @@ class ADoctorVsZombiePlayerController : public APlayerController
 public:
 	ADoctorVsZombiePlayerController();
 
+	virtual void BeginPlay() override;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -49,9 +51,18 @@ protected:
 
 	void Shot();
 
+	void OpenCloseEquipment();
+
 //Variables
 public:
 	bool CanMove = true;
+
+	TArray<class UUniversalWidget*> OpenWidgets;
+
+	class UEquipment* EquipmentWidget;
+
+private:
+	TSubclassOf<class UEquipment> EquipmentClass;
 };
 
 

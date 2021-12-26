@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../../../Enemies/EnemyBase.h"
+#include "../../BaseCharacter.h"
 #include "DamageInterface.generated.h"
 
 UINTERFACE(MinimalAPI, Blueprintable)
@@ -17,5 +17,5 @@ class IDamageInterface
     GENERATED_BODY()
 
 public:
-    virtual void DealDamage(AEnemyBase* Enemy) const {};
+    virtual void DealDamage(ABaseCharacter* Enemy) const {};
 };

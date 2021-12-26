@@ -20,10 +20,10 @@ AEnemyBase::AEnemyBase()
 	PrimaryActorTick.bCanEverTick = true;
 	bCanAffectNavigationGeneration = true;	
 
-	OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
+	//OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
+
 	//GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::OnHit);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AEnemyBase::OnHit);
-
 }
 
 // Called when the game starts or when spawned
@@ -60,6 +60,7 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+/*
 void AEnemyBase::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	const IDamageInterface* ImplementedInterface = Cast<const IDamageInterface>(DamageType);
@@ -68,22 +69,5 @@ void AEnemyBase::TakeDamage(AActor* DamagedActor, float Damage, const UDamageTyp
 		ImplementedInterface->DealDamage(this);
 	}
 }
+*/
 
-void AEnemyBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (AHumanBase* HumanReference = Cast<AHumanBase>(OtherActor))
-	{
-		if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
-		{
-			FActorSpawnParameters SpawnInfo;
-			if (GetWorld()->SpawnActor<AGreenZombie>(HumanReference->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), SpawnInfo))
-			{
-				HumanReference->Destroy();
-
-				int32 index = 0;
-				GameInstanceReference->Humans.Find(HumanReference, index);
-				GameInstanceReference->Humans.RemoveAt(index);
-			}
-		}
-	}
-}

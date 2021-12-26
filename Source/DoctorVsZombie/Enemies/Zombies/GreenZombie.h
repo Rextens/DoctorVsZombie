@@ -23,4 +23,10 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+//VARIABLES
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float SplitTimer = 0.0f;
 };

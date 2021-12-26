@@ -9,6 +9,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/AudioComponent.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+#include "Fight/DamageTypes/DamageInterface.h"
+
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 
@@ -23,6 +26,8 @@ ABaseCharacter::ABaseCharacter()
 	CharacterAnimation->SetupAttachment(RootComponent);
 
 	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+
+	OnTakeAnyDamage.AddDynamic(this, &ABaseCharacter::TakeDamage);
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -51,4 +56,16 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ABaseCharacter::StopThrowing()
 {
 	IsThrowing = false;
+}
+
+
+void ABaseCharacter::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	//UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
+
+	const IDamageInterface* ImplementedInterface = Cast<const IDamageInterface>(DamageType);
+	if (ImplementedInterface)
+	{
+		ImplementedInterface->DealDamage(this);
+	}
 }
