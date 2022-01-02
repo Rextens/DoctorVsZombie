@@ -3,6 +3,13 @@
 
 #include "ZombieSaliva.h"
 
+#include "Kismet/GameplayStatics.h"
+
+#include "../DamageTypes/SalivaDamageType.h"
+#include "../../EnemyBase.h"
+#include "../../../Character/DoctorCharacter.h"
+
+
 // Sets default values
 AZombieSaliva::AZombieSaliva()
 {
@@ -23,5 +30,18 @@ void AZombieSaliva::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AZombieSaliva::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (ADoctorCharacter* HitEnemy = Cast<ADoctorCharacter>(OtherActor))
+	{
+		UGameplayStatics::ApplyDamage(HitEnemy, 1, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, USalivaDamageType::StaticClass());
+	}
+
+	if (!(Cast<AEnemyBase>(OtherActor)))
+	{
+		Destroy();
+	}
 }
 

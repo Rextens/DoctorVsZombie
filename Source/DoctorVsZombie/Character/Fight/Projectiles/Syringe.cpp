@@ -5,6 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "PaperFlipbook.h"
 #include "Pixel2DComponent.h"
+
+#include "../../DoctorCharacter.h"
 #include "../DamageTypes/SyringeDamageType.h"
 #include "../../../Enemies/EnemyBase.h"
 
@@ -23,5 +25,10 @@ void ASyringe::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UP
 	if (AEnemyBase* HitEnemy = Cast<AEnemyBase>(OtherActor))
 	{
 		UGameplayStatics::ApplyDamage(HitEnemy, 1, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, TypeOfDamage);
+	}
+
+	if (!(Cast<ADoctorCharacter>(OtherActor)))
+	{
+		Destroy();
 	}
 }
