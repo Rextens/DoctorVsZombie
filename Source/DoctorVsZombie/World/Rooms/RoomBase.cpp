@@ -65,13 +65,14 @@ void ARoomBase::Tick(float DeltaTime)
 					{
 						Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
 						Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
+						Doors[i].Room->Doors[j].Room = this;
 					}
 				}
 			}
 
-			this->SetHidden(true);
+			DisableActor(true);
 
-			Doors[i].Room->SetHidden(false);
+			Doors[i].Room->DisableActor(false);
 
 			if(Doors[i].Direction == EDoorDirection::Top)
 			{
@@ -138,6 +139,13 @@ void ARoomBase::AddDoorLocation(FVector2D Tile, EDoorDirection Direction)
 	//RoomsReferences.Add(nullptr);
 	
 	Doors.Add(TempDoor);
+}
+
+void ARoomBase::DisableActor(const bool& Disable)
+{
+	SetActorHiddenInGame(Disable);
+	SetActorEnableCollision(!Disable);
+	SetActorTickEnabled(!Disable);
 }
 
 void ARoomBase::OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult)

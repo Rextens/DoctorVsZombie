@@ -50,6 +50,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void AddDoorLocation(FVector2D Tile, EDoorDirection Direction);
+
+	void DisableActor(const bool& Disable);
 	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult);
@@ -58,7 +60,7 @@ public:
 //VARIABLES
 	UPROPERTY()
 	class UPaperTileMapComponent* TileMapComponent;
-
+	
 	/*
 	UPROPERTY()
 	TArray<FVector2D> DoorLocations;
