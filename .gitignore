@@ -6,6 +6,7 @@ Plugins/Paid
 DoctorVsZombie.uproject
 .vscode
 .vs
+.idea
 *.VC.db
 *.opensdf
 *.opendb

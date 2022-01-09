@@ -2,6 +2,7 @@
 
 
 #include "StartRoom.h"
+#include "DoctorVsZombie/Character/DoctorCharacter.h"
 
 AStartRoom::AStartRoom()
 {
@@ -10,5 +11,7 @@ AStartRoom::AStartRoom()
 
 void AStartRoom::BeginPlay()
 {
-
+	Super::BeginPlay();
+	
+	CharacterReference->SetActorLocation(FVector(Spawn.X * TileSize, Spawn.Y * TileSize, CharacterReference->GetActorLocation().Z));
 }

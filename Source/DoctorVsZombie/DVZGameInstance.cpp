@@ -73,6 +73,14 @@ void UDVZGameInstance::RegisterWeapon(const FName& WeaponId, TSubclassOf<UWeapon
 	Weapons.Add(FName(*(GameParish.ToString() + "." + WeaponId.ToString())), Weapon);
 }
 
+void UDVZGameInstance::RegisterRoom(const FName& WeaponId, TSubclassOf<ARoomBase> ChoosenWeapon)
+{
+	FRoomRegistry Room;
+	Room.RegisteredItem = ChoosenWeapon;
+
+	RegisteredRooms.Add(WeaponId, Room);
+}
+
 void UDVZGameInstance::SaveGame(const FString& InstanceName)
 {
 	ADoctorCharacter* CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));

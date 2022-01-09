@@ -81,13 +81,14 @@ void USyringePistol::Shoot(ADoctorCharacter* Caller)
 
 	UWorld* World = GetWorld();
 	AProjectile* Projectile = World->SpawnActor<AProjectile>(ASyringe::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
-	Projectile->TypeOfDamage = USyringeDamageType::StaticClass();
-	Projectile->AfterDamageTypeSet();
-
-	if (Projectile)
+	if(Projectile)
 	{
+		Projectile->TypeOfDamage = USyringeDamageType::StaticClass();
+		Projectile->AfterDamageTypeSet();
+		
 		UGameplayStatics::PlaySound2D(GetWorld(), DartGunSound);
 
 		Projectile->FireInDirection(FVector(Direction.X, Direction.Y, 0.0f));
+		
 	}
 }

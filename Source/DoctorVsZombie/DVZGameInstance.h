@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "Character/Fight/Weapons/Weapon.h"
-#include "Character/Fight/Projectile.h"
 #include "Character/Equipment/Item.h"
+#include "World/Rooms/RoomBase.h"
 #include "DVZGameInstance.generated.h"
 
 
@@ -38,6 +38,15 @@ struct FItemRegistry
 	UItem* RegisteredItem;
 };
 
+USTRUCT(BlueprintType)
+struct FRoomRegistry
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TSubclassOf<ARoomBase> RegisteredItem;
+};
+
 /**
  * 
  */
@@ -51,12 +60,15 @@ public:
 	void RegisterItem(FName ItemId, TSubclassOf<class UItem> ItemClass);
 	void RegisterDamageType(const FName& DamageTypeId, TSubclassOf<class UDamageType> ItemClass);
 	void RegisterWeapon(const FName& WeaponId, TSubclassOf<class UWeapon> ChoosenWeapon);
+	void RegisterRoom(const FName& WeaponId, TSubclassOf<class ARoomBase> ChoosenWeapon);
 
+	
 	UFUNCTION()
 	void SaveGame(const FString& InstanceName);
 
 	UFUNCTION()
 	void LoadGame(const FString& InstanceName);
+
 
 //VARAIBLES
 
@@ -81,7 +93,12 @@ public:
 	TMap<FName, FDamage> DamageTypes;
 	UPROPERTY()
 	TMap<FName, FWeaponRegistry> Weapons;
+	UPROPERTY()
+	TMap<FName, FRoomRegistry> RegisteredRooms;
 
+//	UPROPERTY()
+//	ARoomBase* CurrentRoom;
+	
 	UPROPERTY()
 	UWeapon *test;
 
