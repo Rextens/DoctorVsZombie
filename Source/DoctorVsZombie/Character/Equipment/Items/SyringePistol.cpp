@@ -73,7 +73,9 @@ void USyringePistol::AfterAnimation(ADoctorCharacter* Caller)
 
 void USyringePistol::Shoot(ADoctorCharacter* Caller)
 {
+
 	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Owner = Caller;
 	SpawnParams.Instigator = Caller->GetInstigator();
 
@@ -83,8 +85,10 @@ void USyringePistol::Shoot(ADoctorCharacter* Caller)
 	AProjectile* Projectile = World->SpawnActor<AProjectile>(ASyringe::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
 	if(Projectile)
 	{
-		Projectile->TypeOfDamage = USyringeDamageType::StaticClass();
-		Projectile->AfterDamageTypeSet();
+	
+	//	Projectile->PrimaryActorTick.bCanEverTick = true;
+	//	Projectile->TypeOfDamage = USyringeDamageType::StaticClass();
+	//	Projectile->AfterDamageTypeSet();
 		
 		UGameplayStatics::PlaySound2D(GetWorld(), DartGunSound);
 

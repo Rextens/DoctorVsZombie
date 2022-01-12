@@ -56,7 +56,6 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -68,5 +67,6 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::FireInDirection(const FVector& ShootDirection)
 {
+	UKismetSystemLibrary::PrintString(GetWorld(), ShootDirection.ToString());
 	ProjectileMovementComponent->Velocity = ShootDirection * ProjectileMovementComponent->InitialSpeed;
 }

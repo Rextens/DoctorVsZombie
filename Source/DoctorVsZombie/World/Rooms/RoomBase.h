@@ -52,6 +52,8 @@ public:
 	void AddDoorLocation(FVector2D Tile, EDoorDirection Direction);
 
 	void DisableActor(const bool& Disable);
+
+	void SpawnZombies();
 	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult);
@@ -61,12 +63,7 @@ public:
 	UPROPERTY()
 	class UPaperTileMapComponent* TileMapComponent;
 	
-	/*
-	UPROPERTY()
-	TArray<FVector2D> DoorLocations;
-	UPROPERTY()
-	TArray<ARoomBase*> RoomsReferences;
-	*/
+	TArray<class AZombieBase*> Zombies;
 
 	TArray<FDoor> Doors;
 	
@@ -76,4 +73,6 @@ public:
 	class ADoctorCharacter* CharacterReference;
 
 	FVector2D Spawn = FVector2D(18.0f, 46.0f);
+
+	int32 Hardness = 0;
 };

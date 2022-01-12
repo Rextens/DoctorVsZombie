@@ -18,10 +18,14 @@ ASyringe::ASyringe()
 	ProjectileLook->SetFlipbook(ProjectileAnimation.Object);
 	ProjectileLook->SetWorldScale3D(FVector(4.0f, 4.0f, 4.0f));
 	ProjectileLook->SetWorldRotation(FRotator(0.0f, 0.0f, 270.0f));
+
+	TypeOfDamage = USyringeDamageType::StaticClass();
 }
 
 void ASyringe::OnHit(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	Super::OnHit(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+	
 	if (AEnemyBase* HitEnemy = Cast<AEnemyBase>(OtherActor))
 	{
 		UGameplayStatics::ApplyDamage(HitEnemy, 1, UGameplayStatics::GetPlayerController(GetWorld(), 0), this, TypeOfDamage);

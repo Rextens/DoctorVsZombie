@@ -5,7 +5,11 @@
 
 #include "PaperTileMap.h"
 #include "PaperTileMapComponent.h"
+#include "DoctorVsZombie/DoctorState.h"
 #include "DoctorVsZombie/Character/DoctorCharacter.h"
+#include "DoctorVsZombie/Enemies/Zombies/GreenZombie.h"
+#include "DoctorVsZombie/Enemies/Zombies/RedZombie.h"
+#include "DoctorVsZombie/Enemies/Zombies/ZombieBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -40,6 +44,7 @@ void ARoomBase::BeginPlay()
 	Super::BeginPlay();
 	
 	CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	//SpawnZombies();
 }
 
 // Called every frame
@@ -146,6 +151,51 @@ void ARoomBase::DisableActor(const bool& Disable)
 	SetActorHiddenInGame(Disable);
 	SetActorEnableCollision(!Disable);
 	SetActorTickEnabled(!Disable);
+}
+
+void ARoomBase::SpawnZombies()
+{
+	/*
+	int32 RedMedicine = 0;
+	int32 GreenMedicine = 0;
+	int32 BlueMedicine = 0;
+
+	ADoctorState* DoctorStateReference = Cast<ADoctorState>(CharacterReference->GetPlayerState());
+	
+	for(int32 i = 0; DoctorStateReference->Equipment.Num(); ++i)
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), "fffffffffffffffffffffffff");
+		if(DoctorStateReference->Equipment[i].ItemId == "DVZ.RedMedicine")
+		{
+			++RedMedicine;
+		}
+		else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.GreenMedicine")
+		{
+			
+			UKismetSystemLibrary::PrintString(GetWorld(), "dddddddddddddddd");
+			++GreenMedicine;
+		}
+		else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.BlueMedicine")
+		{
+			++BlueMedicine;
+		}
+	}
+
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::FromInt(GreenMedicine));
+*/
+	//if(RedMedicine > 0)
+	{
+		
+	}
+	//if(GreenMedicine > 0)
+	//{
+	//	GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));	
+	//	GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));
+	//}
+	//if(BlueMedicine > 0)
+	{
+		
+	}
 }
 
 void ARoomBase::OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult)

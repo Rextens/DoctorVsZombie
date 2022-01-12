@@ -21,11 +21,14 @@ ARedZombie::ARedZombie()
 	CharacterAnimation->SetSpriteColor(FLinearColor::Red);
 
 	ZombieColor = ZombieType::RED;
-	HealthPoints = 2;
+	HealthPoints = 1;
 }
 
 void ARedZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Super::EndPlay(EndPlayReason);
+
+	
 	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
 		int32 index = 0;
@@ -33,7 +36,7 @@ void ARedZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		{
 			GameInstanceReference->Enemies.RemoveAt(index);
 		}
-
+		
 		if (GameInstanceReference->ItemDropManagerReference)
 		{
 			GameInstanceReference->ItemDropManagerReference->DropItem(GetActorLocation(), "DVZ.BlueMedicine");

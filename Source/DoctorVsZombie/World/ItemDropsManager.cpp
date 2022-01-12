@@ -48,11 +48,18 @@ void AItemDropsManager::DropItem(FVector Location, FName ItemId)
 
 		if (GameInstanceReference->RegisteredItems.Contains(ItemId))
 		{
-			Items->AddInstance(TempTransform, GameInstanceReference->RegisteredItems[ItemId].RegisteredItem->ItemIcon);
-			FItemStack TempStack;
-			TempStack.ItemId = ItemId;
-			TempStack.Stack = 1;
-			ItemsStacks.Add(TempStack);
+			if(GameInstanceReference->RegisteredItems[ItemId].RegisteredItem->ItemIcon)
+			{
+				Items->AddInstance(TempTransform, GameInstanceReference->RegisteredItems[ItemId].RegisteredItem->ItemIcon);
+				FItemStack TempStack;
+				TempStack.ItemId = ItemId;
+				TempStack.Stack = 1;
+				ItemsStacks.Add(TempStack);
+			}
+			else
+			{
+				UKismetSystemLibrary::PrintString(GetWorld(), "ddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaa");
+			}
 		}
 	}
 }

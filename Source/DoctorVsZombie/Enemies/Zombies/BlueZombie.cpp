@@ -21,11 +21,14 @@ ABlueZombie::ABlueZombie()
 	CharacterAnimation->SetSpriteColor(FLinearColor::Blue);
 
 	ZombieColor = ZombieType::BLUE;
-	HealthPoints = 2;
+	HealthPoints = 1;
 }
 
 void ABlueZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Super::EndPlay(EndPlayReason);
+
+	
 	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
 		int32 index = 0;

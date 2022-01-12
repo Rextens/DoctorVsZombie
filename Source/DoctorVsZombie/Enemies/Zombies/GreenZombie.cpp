@@ -23,7 +23,7 @@ AGreenZombie::AGreenZombie()
 	CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
 
 	ZombieColor = ZombieType::GREEN;
-	HealthPoints = 2;
+	HealthPoints = 1;
 }
 
 void AGreenZombie::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -33,6 +33,8 @@ void AGreenZombie::TakeDamage(AActor* DamagedActor, float Damage, const UDamageT
 
 void AGreenZombie::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Super::EndPlay(EndPlayReason);
+	
 	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
 		int32 index = 0;

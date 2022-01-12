@@ -14,6 +14,18 @@
 #include "Pixel2DComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PaperSprite.h"
+#include "DoctorVsZombie/Character/Fight/Projectiles/RedMedicineProjectile.h"
+
+URedMedicine::URedMedicine()
+{
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> ItemIconObject(TEXT("/Game/TopDownCPP/Animation/Spirtes/Arsenal/RedPotion_Sprite"));
+
+	if (ItemIconObject.Object)
+	{
+		ItemIcon = ItemIconObject.Object;
+	}
+}
+
 
 void URedMedicine::Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index)
 {
@@ -71,9 +83,7 @@ void URedMedicine::Throw(ADoctorCharacter* Caller)
 	FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(Caller->GetActorLocation(), TempLocation);
 
 	UWorld* World = GetWorld();
-	AProjectile* Projectile = World->SpawnActor<AProjectile>(AMedicine::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
-	Projectile->TypeOfDamage = URedMedicineDamageType::StaticClass();
-	Projectile->AfterDamageTypeSet();
+	AProjectile* Projectile = World->SpawnActor<AProjectile>(ARedMedicineProjectile::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
 
 	if (Projectile)
 	{

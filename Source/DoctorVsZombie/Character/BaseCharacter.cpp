@@ -19,8 +19,9 @@
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	
 	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
-	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
+	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
 	CharacterAnimation->SetupAttachment(RootComponent);
 
 	GetCapsuleComponent()->SetWorldScale3D(FVector(0.35f, 0.35f, 0.35f));
@@ -43,6 +44,7 @@ void ABaseCharacter::BeginPlay()
 		UKismetSystemLibrary::PrintString(GetWorld(), "Ddddddddddddddddddddddddddddddd");
 		
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	//	GetCapsuleComponent()->SetWorldRotation(FRotator(270.0f, 0.0f, 0.0f));
 	}
 }
 

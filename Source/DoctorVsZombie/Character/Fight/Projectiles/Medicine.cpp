@@ -17,7 +17,6 @@
 #include "Pixel2DComponent.h"
 #include "PaperFlipbook.h"
 
-#include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AMedicine::AMedicine()

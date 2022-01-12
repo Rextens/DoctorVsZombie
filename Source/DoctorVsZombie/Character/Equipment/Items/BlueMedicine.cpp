@@ -12,12 +12,12 @@
 #include "Pixel2DComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PaperSprite.h"
-
+#include "DoctorVsZombie/Character/Fight/Projectiles/BlueMedicineProjectile.h"
 
 
 UBlueMedicine::UBlueMedicine()
 {
-	static ConstructorHelpers::FObjectFinder<UPaperSprite> ItemIconObject(TEXT("PaperSprite'/Game/TopDownCPP/Animation/Spirtes/Arsenal/BluePotion_Sprite.BluePotion_Sprite'"));
+	static ConstructorHelpers::FObjectFinder<UPaperSprite> ItemIconObject(TEXT("/Game/TopDownCPP/Animation/Spirtes/Arsenal/BluePotion_Sprite"));
 
 	if (ItemIconObject.Object)
 	{
@@ -81,9 +81,7 @@ void UBlueMedicine::Throw(ADoctorCharacter* Caller)
 	FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(Caller->GetActorLocation(), TempLocation);
 
 	UWorld* World = GetWorld();
-	AProjectile* Projectile = World->SpawnActor<AProjectile>(AMedicine::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
-	Projectile->TypeOfDamage = UBlueMedicineDamageType::StaticClass();
-	Projectile->AfterDamageTypeSet();
+	AProjectile* Projectile = World->SpawnActor<AProjectile>(ABlueMedicineProjectile::StaticClass(), Caller->GetActorLocation(), FRotator(0.0f, Direction.Rotation().Yaw, 0.0f), SpawnParams);
 
 	if (Projectile)
 	{

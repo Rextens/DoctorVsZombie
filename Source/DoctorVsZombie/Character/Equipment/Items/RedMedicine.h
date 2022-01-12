@@ -14,6 +14,8 @@ class DOCTORVSZOMBIE_API URedMedicine : public UItem
 {
 	GENERATED_BODY()
 public:
+	URedMedicine();
+	
 	virtual void Use(class ADoctorCharacter* Caller, FItemStack& ItemStackReference, const int32& Index) override;
 
 private:
