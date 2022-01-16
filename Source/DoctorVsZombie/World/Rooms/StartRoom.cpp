@@ -6,7 +6,7 @@
 
 AStartRoom::AStartRoom()
 {
-
+	RoomState = ERoomState::Clear;
 }
 
 void AStartRoom::BeginPlay()

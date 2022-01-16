@@ -7,6 +7,7 @@
 #include "PaperTileMapComponent.h"
 #include "DoctorVsZombie/DoctorState.h"
 #include "DoctorVsZombie/Character/DoctorCharacter.h"
+#include "DoctorVsZombie/Enemies/Zombies/BlueZombie.h"
 #include "DoctorVsZombie/Enemies/Zombies/GreenZombie.h"
 #include "DoctorVsZombie/Enemies/Zombies/RedZombie.h"
 #include "DoctorVsZombie/Enemies/Zombies/ZombieBase.h"
@@ -44,6 +45,8 @@ void ARoomBase::BeginPlay()
 	Super::BeginPlay();
 	
 	CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	//SpawnZombies();
 	//SpawnZombies();
 }
 
@@ -56,81 +59,50 @@ void ARoomBase::Tick(float DeltaTime)
 	RelativeLocation.X = FMath::Floor((CharacterReference->GetActorLocation().X + 16.0f) / TileSize);
 	RelativeLocation.Y = FMath::Floor((CharacterReference->GetActorLocation().Y + 16.0f) / TileSize);
 
-	for(int32 i = 0; i < Doors.Num(); ++i)
+	if(RoomState == ERoomState::Clear)
 	{
-		if(Doors[i].Tile == RelativeLocation)
+		for(int32 i = 0; i < Doors.Num(); ++i)
 		{
-			if(Doors[i].Room == nullptr)
+			if(Doors[i].Tile == RelativeLocation)
 			{
-				Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
+				if(Doors[i].Room == nullptr)
+				{
+					Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
 				
-				for(int32 j = 0; j < Doors[i].Room->Doors.Num(); ++j)
-				{
-					if(Doors[i].Room->Doors[j].Room == nullptr)
+					for(int32 j = 0; j < Doors[i].Room->Doors.Num(); ++j)
 					{
-						Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
-						Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
-						Doors[i].Room->Doors[j].Room = this;
+						if(Doors[i].Room->Doors[j].Room == nullptr)
+						{
+							Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
+							Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
+							Doors[i].Room->Doors[j].Room = this;
+						}
 					}
 				}
-			}
 
-			DisableActor(true);
+				DisableActor(true);
 
-			Doors[i].Room->DisableActor(false);
+				Doors[i].Room->DisableActor(false);
 
-			if(Doors[i].Direction == EDoorDirection::Top)
-			{
-				CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(TileSize, 0.0f, 0.0f));
-			}
-			else if(Doors[i].Direction == EDoorDirection::Right)
-			{
-				CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(0.0f, TileSize, 0.0f));
-			}
-			else if(Doors[i].Direction == EDoorDirection::Bottom)
-			{
-				CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(TileSize, 0.0f, 0.0f));
-			}
-			else if(Doors[i].Direction == EDoorDirection::Left)
-			{
-				CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(0.0f, TileSize, 0.0f));
-			}
-		}
-	}
-
-	
-	/*
-	for (int32 i = 0; i < RoomsReferences.Num(); ++i)
-	{
-		if(DoorLocations[i] == RelativeLocation)
-		{
-			if(RoomsReferences[i] == nullptr)
-			{
-				RoomsReferences[i] = GetWorld()->SpawnActor<ARoomBase>(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
-
-				for(int32 j = 0; j < RoomsReferences[i]->RoomsReferences.Num(); ++j)
+				if(Doors[i].Direction == EDoorDirection::Top)
 				{
-					if(RoomsReferences[i]->RoomsReferences[j] == nullptr)
-					{
-						
-						
-						break;
-					}
+					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(TileSize, 0.0f, 0.0f));
+				}
+				else if(Doors[i].Direction == EDoorDirection::Right)
+				{
+					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(0.0f, TileSize, 0.0f));
+				}
+				else if(Doors[i].Direction == EDoorDirection::Bottom)
+				{
+					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(TileSize, 0.0f, 0.0f));
+				}
+				else if(Doors[i].Direction == EDoorDirection::Left)
+				{
+					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(0.0f, TileSize, 0.0f));
 				}
 			}
 		}
 	}
-	*/
-	
-	/*
-	for (int32 i = 0; i < ConnectedRooms.Num(); ++i)
-	{
-		if(ConnectedRooms[i].Tile == RelativeLocation)
-		{
-			UKismetSystemLibrary::PrintString(GetWorld(), "sssssssssssssssssssssssssssssssssssssssss");
-		}
-	}
-	*/
 }
 
 void ARoomBase::AddDoorLocation(FVector2D Tile, EDoorDirection Direction)
@@ -151,50 +123,61 @@ void ARoomBase::DisableActor(const bool& Disable)
 	SetActorHiddenInGame(Disable);
 	SetActorEnableCollision(!Disable);
 	SetActorTickEnabled(!Disable);
+
+	if(!Disable)
+	{
+		Cast<UDVZGameInstance>(GetGameInstance())->CurrentlyActiveRoom = this;
+	}
+	SpawnZombies();
 }
 
 void ARoomBase::SpawnZombies()
 {
-	/*
-	int32 RedMedicine = 0;
-	int32 GreenMedicine = 0;
-	int32 BlueMedicine = 0;
+	if(RoomState == ERoomState::Infected)
+	{
+		int32 RedMedicine = 0;
+		int32 GreenMedicine = 0;
+		int32 BlueMedicine = 0;
 
-	ADoctorState* DoctorStateReference = Cast<ADoctorState>(CharacterReference->GetPlayerState());
+		ADoctorState* DoctorStateReference = Cast<ADoctorState>(CharacterReference->GetPlayerState());
 	
-	for(int32 i = 0; DoctorStateReference->Equipment.Num(); ++i)
-	{
-		UKismetSystemLibrary::PrintString(GetWorld(), "fffffffffffffffffffffffff");
-		if(DoctorStateReference->Equipment[i].ItemId == "DVZ.RedMedicine")
+		for(int32 i = 0; i < DoctorStateReference->Equipment.Num(); ++i)
 		{
-			++RedMedicine;
+			if(DoctorStateReference->Equipment[i].ItemId == "DVZ.RedMedicine")
+			{
+				++RedMedicine;
+			}
+			else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.GreenMedicine")
+			{
+				++GreenMedicine;
+			}
+			else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.BlueMedicine")
+			{
+				++BlueMedicine;
+			}
 		}
-		else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.GreenMedicine")
-		{
-			
-			UKismetSystemLibrary::PrintString(GetWorld(), "dddddddddddddddd");
-			++GreenMedicine;
-		}
-		else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.BlueMedicine")
-		{
-			++BlueMedicine;
-		}
-	}
 
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::FromInt(GreenMedicine));
-*/
-	//if(RedMedicine > 0)
-	{
+		if(RedMedicine > 0)
+		{
 		
+		}
+		if(GreenMedicine > 0)
+		{
+			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));	
+			//	GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));
+		}
+		if(BlueMedicine > 0)
+		{
+		
+		}
 	}
-	//if(GreenMedicine > 0)
-	//{
-	//	GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));	
-	//	GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));
-	//}
-	//if(BlueMedicine > 0)
+}
+
+void ARoomBase::IsClearFromZombies()
+{
+	if(Zombies.Num() == 0)
 	{
-		
+		RoomState = ERoomState::Clear;
 	}
 }
 

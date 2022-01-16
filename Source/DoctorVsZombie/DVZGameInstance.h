@@ -104,4 +104,7 @@ public:
 
 	UPROPERTY()
 	class AItemDropsManager* ItemDropManagerReference;
+
+	UPROPERTY()
+	ARoomBase* CurrentlyActiveRoom;
 };

@@ -24,10 +24,12 @@ class DOCTORVSZOMBIE_API AZombieBase : public AEnemyBase
 
 public:
     AZombieBase();
+    virtual void BeginPlay() override;
 
     virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
     virtual void Tick(float DeltaTime) override;
+    virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
     void Delay();
 //VARIABLES

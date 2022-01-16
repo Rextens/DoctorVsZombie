@@ -15,6 +15,13 @@ enum EDoorDirection
 	Left
 };
 
+UENUM()
+enum ERoomState
+{
+	Infected,
+	Clear
+};
+
 class ARoomBase;
 
 USTRUCT()
@@ -54,6 +61,8 @@ public:
 	void DisableActor(const bool& Disable);
 
 	void SpawnZombies();
+
+	void IsClearFromZombies();
 	
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult);
@@ -62,7 +71,8 @@ public:
 //VARIABLES
 	UPROPERTY()
 	class UPaperTileMapComponent* TileMapComponent;
-	
+
+	UPROPERTY(EditAnywhere)
 	TArray<class AZombieBase*> Zombies;
 
 	TArray<FDoor> Doors;
@@ -75,4 +85,6 @@ public:
 	FVector2D Spawn = FVector2D(18.0f, 46.0f);
 
 	int32 Hardness = 0;
+	
+	ERoomState RoomState = ERoomState::Infected;
 };
