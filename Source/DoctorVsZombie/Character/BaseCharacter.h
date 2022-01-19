@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
@@ -34,6 +35,12 @@ public:
 //VARIABLES
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* CharacterAnimation;
+
+	UPROPERTY()
+	UFloatingPawnMovement* MovementComponent;
+
+	UPROPERTY()
+	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAudioComponent* Audio;

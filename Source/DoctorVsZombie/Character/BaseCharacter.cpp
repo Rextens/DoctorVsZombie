@@ -19,13 +19,25 @@
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
- 	
+	
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("MainCollisions"));
+	if(CapsuleComponent)
+	{
+		RootComponent = CapsuleComponent;
+	}
+	
 	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
 	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
 	CharacterAnimation->SetupAttachment(RootComponent);
-
 	GetCapsuleComponent()->SetWorldScale3D(FVector(0.35f, 0.35f, 0.35f));
 
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+
+	if(MovementComponent)
+	{
+		MovementComponent->SetUpdatedComponent(RootComponent);
+	}
+	
 	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 
 	OnTakeAnyDamage.AddDynamic(this, &ABaseCharacter::TakeDamage);
