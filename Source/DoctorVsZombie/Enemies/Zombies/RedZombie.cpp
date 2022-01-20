@@ -16,7 +16,6 @@ ARedZombie::ARedZombie()
 {
 	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> GreenZombieFlipbook(TEXT("/Game/TopDownCPP/Animation/Spirtes/Zombie/Zombie1"));
 	CharacterAnimation->SetFlipbook(GreenZombieFlipbook.Object);
-	CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
 
 	CharacterAnimation->SetSpriteColor(FLinearColor::Red);
 

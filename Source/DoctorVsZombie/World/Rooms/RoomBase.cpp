@@ -44,7 +44,7 @@ void ARoomBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 	//SpawnZombies();
 	//SpawnZombies();
@@ -163,8 +163,10 @@ void ARoomBase::SpawnZombies()
 		}
 		if(GreenMedicine > 0)
 		{
-			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));	
-			//	GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f));
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 		}
 		if(BlueMedicine > 0)
 		{

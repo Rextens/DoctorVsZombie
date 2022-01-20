@@ -17,7 +17,7 @@ void UWeapon::Shoot(UDVZGameInstance* GameInstanceReference, ADoctorState* Docto
 		{
 			if (ProjectileClass)
 			{
-				ADoctorCharacter* DoctorCharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+				ADoctorCharacter* DoctorCharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 				FVector Direction = UKismetMathLibrary::GetDirectionUnitVector(DoctorCharacterReference->GetActorLocation(), DestinationLocation);
 

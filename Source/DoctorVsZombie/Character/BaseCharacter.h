@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
+#include "DoctorVsZombie/Characte/Movement/MyPawnMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
-class DOCTORVSZOMBIE_API ABaseCharacter : public ACharacter
+class DOCTORVSZOMBIE_API ABaseCharacter : public APawn
 {
 	GENERATED_BODY()
 
@@ -37,10 +39,23 @@ public:
 	class UPixel2DComponent* CharacterAnimation;
 
 	UPROPERTY()
-	UFloatingPawnMovement* MovementComponent;
+	//UFloatingPawnMovement* MovementComponent;
+	UMyPawnMovementComponent* MovementComponent;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* CapsuleComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* MainCollision;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBoxComponent* AdditionalCollision;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* AdditionalCollision2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* AdditionalCollision3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAudioComponent* Audio;

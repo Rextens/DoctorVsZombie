@@ -17,10 +17,12 @@ AZombieBase::AZombieBase()
 	bUseControllerRotationYaw = false;
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
+	
 	FNavAvoidanceMask test;
 	test.bGroup1 = false;
 
-	GetCharacterMovement()->GroupsToIgnore = test;
+ //   GetCharacterMovement()->GroupsToIgnore = test;
 }
 
 void AZombieBase::BeginPlay()

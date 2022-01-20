@@ -17,7 +17,7 @@ UItem::UItem()
 
 void UItem::Pickup(const int32& Index, class AItemDropsManager* ItemDropsManagerReference)
 {
-	if (ADoctorState* PlayerStateReference = Cast<ADoctorState>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetPlayerState()))
+	if (ADoctorState* PlayerStateReference = Cast<ADoctorState>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)->GetPlayerState()))
 	{
 		PlayerStateReference->Equipment.Add(ItemDropsManagerReference->ItemsStacks[Index]);
 	}

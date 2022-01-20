@@ -24,18 +24,56 @@ ABaseCharacter::ABaseCharacter()
 	if(CapsuleComponent)
 	{
 		RootComponent = CapsuleComponent;
+		CapsuleComponent->SetWorldScale3D(FVector(0.35f, 0.35f, 0.35f));
+		CapsuleComponent->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+		CapsuleComponent->SetCollisionProfileName(TEXT("BlockAll"));
+		CapsuleComponent->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+		CapsuleComponent->SetCapsuleHalfHeight(75);
+		CapsuleComponent->SetCapsuleRadius(28);
+		CapsuleComponent->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	}
 	
-	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
-	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
-	CharacterAnimation->SetupAttachment(RootComponent);
-	GetCapsuleComponent()->SetWorldScale3D(FVector(0.35f, 0.35f, 0.35f));
+	
+/*
+	MainCollision = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainCollision"));
+	RootComponent = MainCollision;
+	//MainCollision->SetRelativeLocation(FVector(0.0f, 0.0f, -75.0f));
+	MainCollision->SetWorldScale3D(FVector(3.0175f * 0.35, 1.0f * 0.35, 1.515f * 0.35));
+	MainCollision->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
 
-	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_NarrowCapsule_2.Shape_NarrowCapsule_2'"));
+
+	if(MeshObj.Object)
+	{
+		
+		MainCollision->SetStaticMesh(MeshObj.Object);
+	}
+	*/
+	
+	CharacterAnimation = CreateDefaultSubobject<UPixel2DComponent>(TEXT("CharacterLook"));
+	if(CharacterAnimation)
+	{
+	//	CharacterAnimation->SetAbsolute(false, true, true);
+		CharacterAnimation->SetRelativeLocation(FVector(0.0f, 0.0f, 6.0f));
+	//	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+		CharacterAnimation->SetRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
+		CharacterAnimation->SetCollisionProfileName(TEXT("NoCollision"));
+		CharacterAnimation->SetupAttachment(RootComponent);
+	}
+
+	
+//	CharacterAnimation->SetWorldRotation(FRotator(0.0f, 90.0f, 270.0f));
+//	GetCapsuleComponent()->SetWorldScale3D(FVector(0.35f, 0.35f, 0.35f));
+
+	MovementComponent = CreateDefaultSubobject<UMyPawnMovementComponent>(TEXT("MovementComponent"));
 
 	if(MovementComponent)
 	{
 		MovementComponent->SetUpdatedComponent(RootComponent);
+		MovementComponent->MaxSpeed = 400;
+		MovementComponent->bSnapToPlaneAtStart = true;
+		MovementComponent->bConstrainToPlane = true;
+		MovementComponent->ConstrainLocationToPlane(FVector(10.0f, 10.0f, 60.0f));
 	}
 	
 	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
@@ -51,6 +89,12 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if(MainCollision)
+	{
+		MainCollision->SetCollisionProfileName(TEXT("BlockAll"));
+	}
+	
+	/*
 	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Falling)
 	{
 		UKismetSystemLibrary::PrintString(GetWorld(), "Ddddddddddddddddddddddddddddddd");
@@ -58,6 +102,7 @@ void ABaseCharacter::BeginPlay()
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	//	GetCapsuleComponent()->SetWorldRotation(FRotator(270.0f, 0.0f, 0.0f));
 	}
+	*/
 }
 
 // Called every frame

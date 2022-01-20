@@ -31,9 +31,9 @@ AHumanBase::AHumanBase()
 	FNavAvoidanceMask test1;
 	test1.bGroup1 = false;
 
-	GetCharacterMovement()->GroupsToIgnore = test;
+//	GetCharacterMovement()->GroupsToIgnore = test;
 
-	GetCharacterMovement()->AvoidanceGroup = test1;
+//	GetCharacterMovement()->AvoidanceGroup = test1;
 }
 
 void AHumanBase::BeginPlay()

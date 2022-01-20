@@ -4,7 +4,7 @@
 #include "EnemyBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Pixel2DComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "../Humans/HumanBase.h"
 #include "Zombies/GreenZombie.h"
 #include "../DVZGameInstance.h"
@@ -12,6 +12,7 @@
 #include "../Character/Fight/DamageTypes/DamageInterface.h"
 
 #include "../World/ItemDropsManager.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AEnemyBase::AEnemyBase()
@@ -23,7 +24,8 @@ AEnemyBase::AEnemyBase()
 	//OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
 
 	//GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::OnHit);
-	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AEnemyBase::OnHit);
+	
+	Cast<UCapsuleComponent>(RootComponent)->OnComponentHit.AddDynamic(this, &AEnemyBase::OnHit);
 }
 
 // Called when the game starts or when spawned

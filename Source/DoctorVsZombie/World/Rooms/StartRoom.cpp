@@ -13,5 +13,5 @@ void AStartRoom::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CharacterReference->SetActorLocation(FVector(Spawn.X * TileSize, Spawn.Y * TileSize, CharacterReference->GetActorLocation().Z));
+	CharacterReference->SetActorLocation(FVector(Spawn.X * TileSize, Spawn.Y * TileSize, 60.0f));
 }
