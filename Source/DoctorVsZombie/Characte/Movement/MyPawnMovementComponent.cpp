@@ -61,7 +61,7 @@ void UMyPawnMovementComponent::TickComponent(float DeltaTime, enum ELevelTick Ti
 			{
 				HandleImpact(Hit, DeltaTime, Delta);
 				// Try to slide the remaining distance along the surface.
-			//	SlideAlongSurface(Delta, 1.f-Hit.Time, Hit.Normal, Hit, true);
+				SlideAlongSurface(FVector(Delta.X, Delta.Y, 0.0f), 1.f-Hit.Time, FVector(Hit.Normal.X, Hit.Normal.Y, 0.0f), Hit, true);
 			}
 
 			// Update velocity

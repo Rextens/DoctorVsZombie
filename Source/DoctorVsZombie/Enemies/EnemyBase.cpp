@@ -19,7 +19,8 @@ AEnemyBase::AEnemyBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	bCanAffectNavigationGeneration = true;	
+	bCanAffectNavigationGeneration = true;
+	Cast<UCapsuleComponent>(RootComponent)->bDynamicObstacle = true;
 
 	//OnTakeAnyDamage.AddDynamic(this, &AEnemyBase::TakeDamage);
 
