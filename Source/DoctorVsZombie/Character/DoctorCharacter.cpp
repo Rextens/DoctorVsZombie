@@ -92,3 +92,11 @@ void ADoctorCharacter::ThrowAnimation(UObject* Caller)
 		
 	}
 }
+
+void ADoctorCharacter::OnDamageZoneHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+{
+//	Super::OnDamageZoneHit(HitComponent, OtherActor, OtherComponent, NormalImpulse, Hit);
+
+	
+}
+

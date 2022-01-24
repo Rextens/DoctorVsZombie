@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Pixel2DComponent.h"
 #include "DoctorVsZombie/DVZGameInstance.h"
+#include "DoctorVsZombie/Character/DoctorCharacter.h"
 
 AZombieBase::AZombieBase()
 {
@@ -19,9 +20,6 @@ AZombieBase::AZombieBase()
 
 	CharacterAnimation->SetWorldScale3D(FVector(0.285f, 0.285f, 0.285f));
 	
-	FNavAvoidanceMask test;
-	test.bGroup1 = false;
-
  //   GetCharacterMovement()->GroupsToIgnore = test;
 }
 
@@ -55,6 +53,16 @@ void AZombieBase::Tick(float DeltaTime)
 		FActorSpawnParameters SpawnInfo;
 		GetWorld()->SpawnActor<AHumanBase>(GetActorLocation(), Rotation, SpawnInfo);
 	}
+
+	if(IsWithinAttackZone && IsReadyToAttack)
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), "Attack!");
+
+		FTimerHandle UnusedHandle;
+		GetWorld()->GetTimerManager().SetTimer(UnusedHandle, this, &AZombieBase::AttackCooldown, 3.0f, false);
+		
+		IsReadyToAttack = false;
+	}
 }
 
 void AZombieBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -71,6 +79,34 @@ void AZombieBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AZombieBase::Delay()
 {
 	CharacterAnimation->SetSpriteColor(FLinearColor::White);
+}
+
+void AZombieBase::OnDamageZoneHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult)
+{
+	Super::OnDamageZoneHit(PrimitiveComponent, Actor, PrimitiveComponent1, I, bArg, HitResult);
+
+	if(ADoctorCharacter* DoctorReference = Cast<ADoctorCharacter>(Actor))
+	{
+		IsWithinAttackZone = true;
+	}
+}
+
+void AZombieBase::OnDamageZoneExit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor,
+	UPrimitiveComponent* PrimitiveComponent1, int I)
+{
+	Super::OnDamageZoneExit(PrimitiveComponent, Actor, PrimitiveComponent1, I);
+
+	if(ADoctorCharacter* DoctorReference = Cast<ADoctorCharacter>(Actor))
+	{
+		IsWithinAttackZone = false;
+	}
+}
+
+void AZombieBase::AttackCooldown()
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), "CD");
+
+	IsReadyToAttack = true;
 }
 
 

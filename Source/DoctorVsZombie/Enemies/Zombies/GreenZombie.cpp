@@ -10,6 +10,10 @@
 #include "../../Humans/HumanBase.h"
 #include "../../DVZGameInstance.h"
 #include "../../World/ItemDropsManager.h"
+#include "DoctorVsZombie/DoctorState.h"
+#include "DoctorVsZombie/Character/DoctorCharacter.h"
+#include "DoctorVsZombie/Enemies/Fight/DamageTypes/ZombieAttack.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -65,5 +69,9 @@ void AGreenZombie::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
 				GameInstanceReference->Humans.RemoveAt(index);
 			}
 		}
+	}
+	else if(ADoctorCharacter* DoctorReference = Cast<ADoctorCharacter>(OtherActor))
+	{
+	//	UGameplayStatics::ApplyDamage(DoctorReference, 1, GetController(), this, UZombieAttack::StaticClass());
 	}
 }

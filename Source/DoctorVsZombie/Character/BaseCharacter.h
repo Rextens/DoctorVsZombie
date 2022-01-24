@@ -7,6 +7,7 @@
 #include "DoctorVsZombie/Characte/Movement/MyPawnMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
@@ -33,7 +34,13 @@ public:
 
 	UFUNCTION()
 	virtual void TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+	
+	UFUNCTION()
+	virtual void OnDamageZoneHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult);
 
+	UFUNCTION()
+	virtual void OnDamageZoneExit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I) {};
+	
 //VARIABLES
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* CharacterAnimation;
@@ -44,10 +51,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* CapsuleComponent;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* MainCollision;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* DamageCollisionComponent;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* AdditionalCollision;
 

@@ -39,5 +39,9 @@ public:
 	UFUNCTION()
 	void ThrowAnimation(UObject* Caller);
 
+	//virtual void OnAnimHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) override;
+
+	virtual void OnDamageZoneHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+	
 //VARIABLES
 };

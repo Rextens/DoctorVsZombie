@@ -32,6 +32,18 @@ ABaseCharacter::ABaseCharacter()
 		CapsuleComponent->SetCapsuleRadius(28);
 		CapsuleComponent->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	}
+
+	DamageCollisionComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("DamageCollision"));
+	if(DamageCollisionComponent)
+	{
+		DamageCollisionComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+		DamageCollisionComponent->SetupAttachment(RootComponent);
+		DamageCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ABaseCharacter::OnDamageZoneHit);
+		DamageCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ABaseCharacter::OnDamageZoneExit);
+		DamageCollisionComponent->SetCapsuleHalfHeight(90);
+		DamageCollisionComponent->SetCapsuleRadius(45);
+	}
+	
 	
 	
 /*
@@ -59,6 +71,7 @@ ABaseCharacter::ABaseCharacter()
 		CharacterAnimation->SetRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
 		CharacterAnimation->SetCollisionProfileName(TEXT("NoCollision"));
 		CharacterAnimation->SetupAttachment(RootComponent);
+		//CharacterAnimation->OnComponentHit.AddDynamic(this, &ABaseCharacter::OnAnimHit);
 	}
 
 	
@@ -88,11 +101,6 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if(MainCollision)
-	{
-		MainCollision->SetCollisionProfileName(TEXT("BlockAll"));
-	}
 	
 	/*
 	if (GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Falling)
@@ -126,11 +134,15 @@ void ABaseCharacter::StopThrowing()
 
 void ABaseCharacter::TakeDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	//UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
-
 	const IDamageInterface* ImplementedInterface = Cast<const IDamageInterface>(DamageType);
 	if (ImplementedInterface)
 	{
 		ImplementedInterface->DealDamage(this);
 	}
+}
+
+void ABaseCharacter::OnDamageZoneHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor,
+	UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult)
+{
+	
 }

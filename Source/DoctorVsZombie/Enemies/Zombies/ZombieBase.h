@@ -32,6 +32,14 @@ public:
     virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
 
     void Delay();
-//VARIABLES
+
+    virtual void OnDamageZoneHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult) override;
+	virtual void OnDamageZoneExit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I) override;
+	void AttackCooldown();
+	
+	//VARIABLES
     ZombieType ZombieColor;
+
+	bool IsReadyToAttack = true;
+	bool IsWithinAttackZone = false;
 };
