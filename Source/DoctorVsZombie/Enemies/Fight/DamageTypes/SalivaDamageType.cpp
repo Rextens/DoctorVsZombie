@@ -2,8 +2,11 @@
 
 
 #include "SalivaDamageType.h"
+
+#include "Pixel2DComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "../../../Character/DoctorCharacter.h"
+#include "DoctorVsZombie/DoctorState.h"
 
 
 void USalivaDamageType::DealDamage(ABaseCharacter* Enemy) const
@@ -13,6 +16,13 @@ void USalivaDamageType::DealDamage(ABaseCharacter* Enemy) const
 		//EnemyReference->IsSleeping = true;
 		//EnemyReference->SleepingTimer = 0.0f;
 
-		UKismetSystemLibrary::PrintString(GetWorld(), "Go to sleep already!");
+		EnemyReference->CharacterAnimation->SetSpriteColor(FLinearColor::Red);
+
+		FTimerHandle UnusedHandle;
+		EnemyReference->GetWorldTimerManager().SetTimer(UnusedHandle, EnemyReference, &ADoctorCharacter::TakeDamageDelay, 0.3f, false);
+
+		--Cast<ADoctorState>(EnemyReference->GetPlayerState())->HealthPoints;
+
+		UKismetSystemLibrary::PrintString(GetWorld(), "HP: " + FString::FromInt(Cast<ADoctorState>(EnemyReference->GetPlayerState())->HealthPoints));
 	}
 }

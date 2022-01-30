@@ -79,9 +79,12 @@ void AItemDropsManager::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AAct
 	{
 		if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 		{
-			if (ItemsStacks.Num() > SweepResult.Item && GameInstanceReference->RegisteredItems.Contains(ItemsStacks[SweepResult.Item].ItemId))
+			if(SweepResult.Item != -1)
 			{
-				GameInstanceReference->RegisteredItems[ItemsStacks[SweepResult.Item].ItemId].RegisteredItem->Pickup(SweepResult.Item, this);
+				if (ItemsStacks.Num() > SweepResult.Item && GameInstanceReference->RegisteredItems.Contains(ItemsStacks[SweepResult.Item].ItemId))
+				{
+					GameInstanceReference->RegisteredItems[ItemsStacks[SweepResult.Item].ItemId].RegisteredItem->Pickup(SweepResult.Item, this);
+				}
 			}
 		}
 	}

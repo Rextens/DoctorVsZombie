@@ -2,6 +2,8 @@
 
 
 #include "DoctorCharacter.h"
+
+#include "Pixel2DComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "../DVZGameInstance.h"
@@ -98,5 +100,10 @@ void ADoctorCharacter::OnDamageZoneHit(UPrimitiveComponent* HitComponent, AActor
 //	Super::OnDamageZoneHit(HitComponent, OtherActor, OtherComponent, NormalImpulse, Hit);
 
 	
+}
+
+void ADoctorCharacter::TakeDamageDelay()
+{
+	CharacterAnimation->SetSpriteColor(FLinearColor::White);
 }
 

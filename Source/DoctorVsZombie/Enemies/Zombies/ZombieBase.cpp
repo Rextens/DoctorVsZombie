@@ -9,6 +9,8 @@
 #include "Pixel2DComponent.h"
 #include "DoctorVsZombie/DVZGameInstance.h"
 #include "DoctorVsZombie/Character/DoctorCharacter.h"
+#include "DoctorVsZombie/Enemies/Fight/DamageTypes/ZombieAttack.h"
+#include "Kismet/GameplayStatics.h"
 
 AZombieBase::AZombieBase()
 {
@@ -56,7 +58,8 @@ void AZombieBase::Tick(float DeltaTime)
 
 	if(IsWithinAttackZone && IsReadyToAttack)
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), "Attack!");
+		//UKismetSystemLibrary::PrintString(GetWorld(), "Attack!");
+		UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(GetWorld(), 0), 1.0f, GetController(), this, UZombieAttack::StaticClass());
 
 		FTimerHandle UnusedHandle;
 		GetWorld()->GetTimerManager().SetTimer(UnusedHandle, this, &AZombieBase::AttackCooldown, 3.0f, false);

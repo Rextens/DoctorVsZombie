@@ -12,6 +12,7 @@ AHumanBase::AHumanBase()
 {
 	static ConstructorHelpers::FObjectFinder<UPaperFlipbook> HumanAnimation(TEXT("/Game/Humans/Sprites/Human"));
 
+	
 	if (HumanAnimation.Object)
 	{
 		CharacterAnimation->SetFlipbook(HumanAnimation.Object);
@@ -24,16 +25,6 @@ AHumanBase::AHumanBase()
 	bUseControllerRotationYaw = false;
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-	FNavAvoidanceMask test;
-	test.bGroup0 = false;
-
-	FNavAvoidanceMask test1;
-	test1.bGroup1 = false;
-
-//	GetCharacterMovement()->GroupsToIgnore = test;
-
-//	GetCharacterMovement()->AvoidanceGroup = test1;
 }
 
 void AHumanBase::BeginPlay()

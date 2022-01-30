@@ -98,6 +98,9 @@ public:
 
 //	UPROPERTY()
 //	ARoomBase* CurrentRoom;
+
+	UPROPERTY()
+	TArray<ARoomBase*> ExistingRooms;
 	
 	UPROPERTY()
 	UWeapon *test;

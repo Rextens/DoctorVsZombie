@@ -35,6 +35,10 @@ ARoomBase::ARoomBase()
 
 		int32 X, Y, TempLayers;
 		TileMapComponent->GetMapSize(X, Y, TempLayers);
+
+		TilesNumber.X = X;
+		TilesNumber.Y = Y;
+		
 		
 		TileMapComponent->SetRelativeLocation(FVector(Y * TileSize , 0.0f, 0.0f));
 	}
@@ -49,6 +53,11 @@ void ARoomBase::BeginPlay()
 	
 	CharacterReference = Cast<ADoctorCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
+
+	if(UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
+	{
+		GameInstanceReference->ExistingRooms.Add(this);
+	}
 	//SpawnZombies();
 	//SpawnZombies();
 }
@@ -59,9 +68,11 @@ void ARoomBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	FVector2D RelativeLocation;
-	RelativeLocation.X = FMath::Floor((CharacterReference->GetActorLocation().X + 16.0f) / TileSize);
+	RelativeLocation.X = FMath::Floor((CharacterReference->GetActorLocation().X + 16.0f - GetActualLocation().X) / TileSize);
 	RelativeLocation.Y = FMath::Floor((CharacterReference->GetActorLocation().Y + 16.0f) / TileSize);
 
+	//UKismetSystemLibrary::PrintString(GetWorld(), GetActualLocation().ToString());
+	
 	if(RoomState == ERoomState::Clear)
 	{
 		for(int32 i = 0; i < Doors.Num(); ++i)
@@ -70,15 +81,18 @@ void ARoomBase::Tick(float DeltaTime)
 			{
 				if(Doors[i].Room == nullptr)
 				{
-					Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(FVector(0.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
-				
-					for(int32 j = 0; j < Doors[i].Room->Doors.Num(); ++j)
+					if(UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 					{
-						if(Doors[i].Room->Doors[j].Room == nullptr)
+						Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(FVector(GameInstanceReference->ExistingRooms.Num() * 5000.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
+
+						for(int32 j = 0; j < Doors[i].Room->Doors.Num(); ++j)
 						{
-							Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
-							Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
-							Doors[i].Room->Doors[j].Room = this;
+							if(Doors[i].Room->Doors[j].Room == nullptr)
+							{
+								Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
+								Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
+								Doors[i].Room->Doors[j].Room = this;
+							}
 						}
 					}
 				}
@@ -86,22 +100,24 @@ void ARoomBase::Tick(float DeltaTime)
 				DisableActor(true);
 
 				Doors[i].Room->DisableActor(false);
+				
+				FVector2D Destination = FVector2D(Doors[i].DestinationTile.X * TileSize + Doors[i].Room->GetActorLocation().X - TilesNumber.Y * TileSize, Doors[i].DestinationTile.Y * TileSize);
 
 				if(Doors[i].Direction == EDoorDirection::Top)
 				{
-					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(TileSize, 0.0f, 0.0f));
+					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) - FVector(TileSize, 0.0f, 0.0f));
 				}
 				else if(Doors[i].Direction == EDoorDirection::Right)
 				{
-					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) - FVector(0.0f, TileSize, 0.0f));
+					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) - FVector(0.0f, TileSize, 0.0f));
 				}
 				else if(Doors[i].Direction == EDoorDirection::Bottom)
 				{
-					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(TileSize, 0.0f, 0.0f));
+					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) + FVector(TileSize, 0.0f, 0.0f));
 				}
 				else if(Doors[i].Direction == EDoorDirection::Left)
 				{
-					CharacterReference->SetActorLocation(FVector(Doors[i].DestinationTile * TileSize, CharacterReference->GetActorLocation().Z) + FVector(0.0f, TileSize, 0.0f));
+					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) + FVector(0.0f, TileSize, 0.0f));
 				}
 			}
 		}
@@ -168,8 +184,8 @@ void ARoomBase::SpawnZombies()
 		{
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
-			GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 		}
 		if(BlueMedicine > 0)
 		{
@@ -200,5 +216,10 @@ void ARoomBase::OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UP
 		UKismetSystemLibrary::PrintString(GetWorld(), RelativeLocation.ToString());
 	}
 	*/
+}
+
+FVector ARoomBase::GetActualLocation()
+{
+	return FVector(GetActorLocation().X - TilesNumber.Y * TileSize, GetActorLocation().Y, GetActorLocation().Z);
 }
 

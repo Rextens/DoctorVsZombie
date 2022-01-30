@@ -45,8 +45,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPixel2DComponent* CharacterAnimation;
 
-	UPROPERTY()
-	//UFloatingPawnMovement* MovementComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMyPawnMovementComponent* MovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

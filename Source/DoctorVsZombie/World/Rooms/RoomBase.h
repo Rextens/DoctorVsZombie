@@ -67,6 +67,8 @@ public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, FVector Vector, const FHitResult& HitResult);
 
+	UFUNCTION()
+	FVector GetActualLocation();
 	
 //VARIABLES
 	UPROPERTY()
@@ -85,6 +87,8 @@ public:
 	FVector2D Spawn = FVector2D(18.0f, 46.0f);
 
 	int32 Hardness = 0;
+
+	FVector2D TilesNumber;
 	
 	ERoomState RoomState = ERoomState::Infected;
 };
