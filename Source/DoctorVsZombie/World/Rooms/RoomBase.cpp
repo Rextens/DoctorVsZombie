@@ -164,32 +164,44 @@ void ARoomBase::SpawnZombies()
 		{
 			if(DoctorStateReference->Equipment[i].ItemId == "DVZ.RedMedicine")
 			{
-				++RedMedicine;
+				RedMedicine += DoctorStateReference->Equipment[i].Stack;
 			}
 			else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.GreenMedicine")
 			{
-				++GreenMedicine;
+				GreenMedicine += DoctorStateReference->Equipment[i].Stack;
 			}
 			else if(DoctorStateReference->Equipment[i].ItemId == "DVZ.BlueMedicine")
 			{
-				++BlueMedicine;
+				BlueMedicine += DoctorStateReference->Equipment[i].Stack;
 			}
 		}
 
-		if(RedMedicine > 0)
-		{
-		
-		}
-		if(GreenMedicine > 0)
+		if(RedMedicine > 1)
 		{
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
+			
+			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+		}
+		if(GreenMedicine > 1)
+		{
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
+			
 			GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 		}
-		if(BlueMedicine > 0)
+		if(BlueMedicine > 1)
 		{
-		
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
+			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
+			
+			GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 		}
 	}
 }
