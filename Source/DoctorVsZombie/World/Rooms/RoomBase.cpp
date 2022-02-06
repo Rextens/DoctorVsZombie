@@ -43,7 +43,8 @@ ARoomBase::ARoomBase()
 		TileMapComponent->SetRelativeLocation(FVector(Y * TileSize , 0.0f, 0.0f));
 	}
 
-	AddDoorLocation(FVector2D(68.0f, 2.0f), EDoorDirection::Top);
+	AddDoorLocation(FVector2D(2.0f, 2.0f), EDoorDirection::Top);
+	AddDoorLocation(FVector2D(34.0f, 67.0f), EDoorDirection::Top);
 }
 
 // Called when the game starts or when spawned
@@ -92,6 +93,8 @@ void ARoomBase::Tick(float DeltaTime)
 								Doors[i].DestinationTile = Doors[i].Room->Doors[j].Tile;
 								Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
 								Doors[i].Room->Doors[j].Room = this;
+
+								break;
 							}
 						}
 					}
@@ -106,18 +109,26 @@ void ARoomBase::Tick(float DeltaTime)
 				if(Doors[i].Direction == EDoorDirection::Top)
 				{
 					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) - FVector(TileSize, 0.0f, 0.0f));
+
+					break;
 				}
 				else if(Doors[i].Direction == EDoorDirection::Right)
 				{
 					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) - FVector(0.0f, TileSize, 0.0f));
+
+					break;
 				}
 				else if(Doors[i].Direction == EDoorDirection::Bottom)
 				{
 					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) + FVector(TileSize, 0.0f, 0.0f));
+
+					break;
 				}
 				else if(Doors[i].Direction == EDoorDirection::Left)
 				{
 					CharacterReference->SetActorLocation(FVector(Destination, CharacterReference->GetActorLocation().Z) + FVector(0.0f, TileSize, 0.0f));
+
+					break;
 				}
 			}
 		}
@@ -126,13 +137,18 @@ void ARoomBase::Tick(float DeltaTime)
 
 void ARoomBase::AddDoorLocation(FVector2D Tile, EDoorDirection Direction)
 {
+	int32 X, Y, TempLayers;
+	TileMapComponent->GetMapSize(X, Y, TempLayers);
+
 	FDoor TempDoor;
-	TempDoor.Tile = Tile;
+	TempDoor.Tile = FVector2D(X - Tile.X, Tile.Y);
 	TempDoor.Direction = Direction;
 	//ConnectedRooms.Add(TempDoor);
 
 	//DoorLocations.Add(Tile);
 	//RoomsReferences.Add(nullptr);
+
+	
 	
 	Doors.Add(TempDoor);
 }
