@@ -53,15 +53,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* DamageCollisionComponent;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UBoxComponent* AdditionalCollision;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCapsuleComponent* AdditionalCollision2;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCapsuleComponent* AdditionalCollision3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UAudioComponent* Audio;

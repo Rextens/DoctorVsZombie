@@ -71,8 +71,6 @@ void ARoomBase::Tick(float DeltaTime)
 	FVector2D RelativeLocation;
 	RelativeLocation.X = FMath::Floor((CharacterReference->GetActorLocation().X + 16.0f - GetActualLocation().X) / TileSize);
 	RelativeLocation.Y = FMath::Floor((CharacterReference->GetActorLocation().Y + 16.0f) / TileSize);
-
-	//UKismetSystemLibrary::PrintString(GetWorld(), GetActualLocation().ToString());
 	
 	if(RoomState == ERoomState::Clear)
 	{
@@ -84,7 +82,29 @@ void ARoomBase::Tick(float DeltaTime)
 				{
 					if(UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 					{
-						Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(FVector(GameInstanceReference->ExistingRooms.Num() * 5000.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
+						//GameInstanceReference->RegisteredRooms.GenerateKeyArray()
+
+						int32 Iterator = 0;
+
+						int32 ChoosenRoom = FMath::RandRange(1, GameInstanceReference->RegisteredRooms.Num() - 1);
+
+						TSubclassOf<ARoomBase> RandomRoom;
+						
+						for(auto& Pair : GameInstanceReference->RegisteredRooms)
+						{
+							if(Iterator == ChoosenRoom)
+							{
+								RandomRoom = Pair.Value.RegisteredItem;
+
+								UKismetSystemLibrary::PrintString(GetWorld(), FString::FromInt(Iterator) + " " + Pair.Key.ToString());
+								
+								break;
+							}
+							
+							++Iterator;
+						}
+						
+						Doors[i].Room = GetWorld()->SpawnActor<ARoomBase>(RandomRoom, FVector(GameInstanceReference->ExistingRooms.Num() * 5000.0f, 0.0f, 0.0f), FRotator(0.0f, 0.0f, 0.0f));
 
 						for(int32 j = 0; j < Doors[i].Room->Doors.Num(); ++j)
 						{
@@ -94,7 +114,7 @@ void ARoomBase::Tick(float DeltaTime)
 								Doors[i].Room->Doors[j].DestinationTile = Doors[i].Tile;
 								Doors[i].Room->Doors[j].Room = this;
 
-								break;
+								break;	
 							}
 						}
 					}
@@ -192,32 +212,89 @@ void ARoomBase::SpawnZombies()
 			}
 		}
 
-		if(RedMedicine > 1)
+		TArray<int32> AllowedScenarios;
+
+		if(RedMedicine > 0)
 		{
+			AllowedScenarios.Add(0);
+			/*
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
 			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
 			
 			GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+			*/
 		}
-		if(GreenMedicine > 1)
+		if(GreenMedicine > 0)
 		{
+			AllowedScenarios.Add(1);
+			/*
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
 			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
 			
 			GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+			*/
 		}
-		if(BlueMedicine > 1)
+		if(BlueMedicine > 0)
 		{
+			AllowedScenarios.Add(2);
+			/*
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(GetActualLocation().X + 64, 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);	
 			SpawnedZombie1->HealthPoints = GreenMedicine - 1;
 			
 			GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector( GetActualLocation().X + 64, 128, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+			*/
+		}
+
+		if(AllowedScenarios.Num() > 0)
+		{
+			int32 ChoosenScenario = FMath::RandRange(0, AllowedScenarios.Num() - 1);
+
+			if(AllowedScenarios[ChoosenScenario] == 0)
+			{
+				FActorSpawnParameters SpawnParameters;
+				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				for(int32 i = 0; i < RedMedicine - 1; ++i)
+				{
+					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+				}
+			
+				GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector( GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+			}
+			else if(AllowedScenarios[ChoosenScenario] == 1)
+			{
+				FActorSpawnParameters SpawnParameters;
+				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				for(int32 i = 0; i < GreenMedicine - 1; ++i)
+				{
+					UKismetSystemLibrary::PrintString(GetWorld(), "dddddddddddddddd");
+					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+				}
+			
+				GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector( GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+	
+			}
+			else if(AllowedScenarios[ChoosenScenario] == 2)
+			{
+				FActorSpawnParameters SpawnParameters;
+				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				for(int32 i = 0; i < BlueMedicine - 1; ++i)
+				{
+					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+				}
+			
+				GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector( GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
+	
+			}
+		}
+		else
+		{
+			
 		}
 	}
 }

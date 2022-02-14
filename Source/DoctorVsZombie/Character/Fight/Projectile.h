@@ -45,4 +45,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UDamageType> TypeOfDamage;
+
+protected:
+	float DestructionTimer;
 };

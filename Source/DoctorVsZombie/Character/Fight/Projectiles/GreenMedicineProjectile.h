@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Projectile.h"
-#include "Commandlets/AnalyzeReferencedContentStat.h"
+//#include "Commandlets/AnalyzeReferencedContentStat.h"
 #include "GreenMedicineProjectile.generated.h"
 
 /**

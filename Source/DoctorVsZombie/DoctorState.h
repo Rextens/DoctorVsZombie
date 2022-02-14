@@ -12,28 +12,6 @@
  * 
  */
 
-USTRUCT(BlueprintType)
-struct FWeaponStack
-{
-	GENERATED_BODY()
-
-	UPROPERTY()
-	FName WeaponId;
-
-	int32 Stack = 0;
-};
-
-USTRUCT(BlueprintType)
-struct FMedicineStack
-{
-	GENERATED_BODY()
-
-	UPROPERTY()
-	FName MedicineId;
-
-	int32 Stack = 0;
-};
-
 UCLASS()
 class DOCTORVSZOMBIE_API ADoctorState : public APlayerState
 {
@@ -49,16 +27,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemStack> Equipment;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FWeaponStack> Weapons;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FMedicineStack> Medicines;
-
-	UPROPERTY()
-	UWeapon* test;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//TArray<FItemStack> Equipment;
 };

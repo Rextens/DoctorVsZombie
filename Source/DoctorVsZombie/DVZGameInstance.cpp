@@ -31,6 +31,7 @@
 #include "World/ItemDropsManager.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "World/Rooms/StartRoom.h"
 
 
 void UDVZGameInstance::Init()
@@ -48,6 +49,12 @@ void UDVZGameInstance::Init()
 	RegisterItem("GreenMedicine", UGreenMedicine::StaticClass());
 	RegisterItem("BlueMedicine", UBlueMedicine::StaticClass());
 	RegisterItem("SyringePistol", USyringePistol::StaticClass());
+
+	RegisterRoom("StartRoom", AStartRoom::StaticClass());
+	RegisterRoom("Room1", ARoomBase::StaticClass());
+	RegisterRoom("Room2", ARoomBase::StaticClass());
+	RegisterRoom("Room3", ARoomBase::StaticClass());
+
 
 	test = NewObject<UWeapon>();
 }
@@ -73,12 +80,12 @@ void UDVZGameInstance::RegisterWeapon(const FName& WeaponId, TSubclassOf<UWeapon
 	Weapons.Add(FName(*(GameParish.ToString() + "." + WeaponId.ToString())), Weapon);
 }
 
-void UDVZGameInstance::RegisterRoom(const FName& WeaponId, TSubclassOf<ARoomBase> ChoosenWeapon)
+void UDVZGameInstance::RegisterRoom(const FName& RoomId, TSubclassOf<ARoomBase> RoomClass)
 {
 	FRoomRegistry Room;
-	Room.RegisteredItem = ChoosenWeapon;
+	Room.RegisteredItem = RoomClass;
 
-	RegisteredRooms.Add(WeaponId, Room);
+	RegisteredRooms.Add(RoomId, Room);
 }
 
 void UDVZGameInstance::SaveGame(const FString& InstanceName)

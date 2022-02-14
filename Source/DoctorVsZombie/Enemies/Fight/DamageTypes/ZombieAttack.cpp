@@ -12,9 +12,6 @@ void UZombieAttack::DealDamage(ABaseCharacter* Enemy) const
 {
 	if (ADoctorCharacter* EnemyReference = Cast<ADoctorCharacter>(Enemy))
 	{
-		//EnemyReference->IsSleeping = true;
-		//EnemyReference->SleepingTimer = 0.0f;
-
 		EnemyReference->CharacterAnimation->SetSpriteColor(FLinearColor::Red);
 
 		FTimerHandle UnusedHandle;

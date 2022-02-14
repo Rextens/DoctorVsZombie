@@ -63,6 +63,12 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	DestructionTimer += DeltaTime;
+
+	if(DestructionTimer >= 20.0f)
+	{
+		Destroy();
+	}
 }
 
 void AProjectile::FireInDirection(const FVector& ShootDirection)

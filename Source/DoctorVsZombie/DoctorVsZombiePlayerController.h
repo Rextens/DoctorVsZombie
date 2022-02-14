@@ -47,7 +47,7 @@ protected:
 	void MoveRight(float Value);
 	void Scroll(float Value);
 
-	void ChooseDamage(const int32 ChoosenNumber);
+	void ChooseItem(const int32 ChoosenNumber);
 
 	void Shot();
 

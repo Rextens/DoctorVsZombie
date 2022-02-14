@@ -18,17 +18,8 @@ void ADoctorState::BeginPlay()
 	Item.Stack = 1;
 	Equipment.Add(Item);
 
-	/*
-	FItemStack Item2;
-	Item2.ItemId = "DVZ.BlueMedicine";
-	Item2.Stack = 10;
-	Equipment.Add(Item2);
-	*/
-
 	FItemStack Item3;
 	Item3.ItemId = "DVZ.GreenMedicine";
 	Item3.Stack = 3;
 	Equipment.Add(Item3);
-
-	test = NewObject<UWeapon>();
 }

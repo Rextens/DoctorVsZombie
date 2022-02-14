@@ -45,7 +45,7 @@ void ADoctorVsZombiePlayerController::BeginPlay()
 void ADoctorVsZombiePlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-
+	
 	// keep updating the destination every tick while desired
 	if (bMoveToMouseCursor)
 	{
@@ -62,15 +62,15 @@ void ADoctorVsZombiePlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &ADoctorVsZombiePlayerController::MoveRight);
 	InputComponent->BindAxis("Scroll", this, &ADoctorVsZombiePlayerController::Scroll);
 
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 0);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem2", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 1);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem3", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 2);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem4", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 3);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem5", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 4);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem6", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 5);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem7", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 6);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem8", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 7);
-	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem9", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseDamage, 8);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem1", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 0);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem2", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 1);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem3", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 2);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem4", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 3);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem5", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 4);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem6", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 5);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem7", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 6);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem8", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 7);
+	InputComponent->BindAction<FChooseWeaponDelegate>("ChooseItem9", IE_Pressed, this, &ADoctorVsZombiePlayerController::ChooseItem, 8);
 
 	InputComponent->BindAction("OpenEquipment/CloseGui", IE_Pressed, this, &ADoctorVsZombiePlayerController::OpenCloseEquipment);
 
@@ -166,26 +166,13 @@ void ADoctorVsZombiePlayerController::Scroll(float Value)
 	}
 }
 
-void ADoctorVsZombiePlayerController::ChooseDamage(const int32 ChoosenNumber)
+void ADoctorVsZombiePlayerController::ChooseItem(const int32 ChoosenNumber)
 {
 	if (UDVZGameInstance* GameInstanceReference = Cast<UDVZGameInstance>(GetGameInstance()))
 	{
 		if (ADoctorState* DoctorState = Cast<ADoctorState>(PlayerState))
 		{
 			DoctorState->ChosenItem = ChoosenNumber;
-
-			/*
-			if (ChoosenNumber == 0)
-			{
-				DoctorState->ChosenWeapon = 0;
-			//	DoctorState->ChosenDamageType = 0;
-			}
-			else if(ChoosenNumber = 1)
-			{
-				DoctorState->ChosenWeapon = 1;
-			//	DoctorState->ChosenDamageType = ChoosenNumber;
-			}
-			*/
 		}
 	}
 }
@@ -201,15 +188,9 @@ void ADoctorVsZombiePlayerController::Shot()
 				if (GameInstanceReference->RegisteredItems.Contains(DoctorState->Equipment[DoctorState->ChosenItem].ItemId))
 				{
 					GameInstanceReference->RegisteredItems[DoctorState->Equipment[DoctorState->ChosenItem].ItemId].RegisteredItem->Use(Cast<ADoctorCharacter>(GetPawn()), DoctorState->Equipment[DoctorState->ChosenItem], DoctorState->ChosenItem);
-					//UKismetSystemLibrary::PrintString(GetWorld(), GameInstanceReference->test->abc);
 				}
 			}
 		}
-		/*
-		FHitResult HitResult;
-		GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
-		CharacterReference->Fire(HitResult.Location);
-		*/
 	}
 }
 
