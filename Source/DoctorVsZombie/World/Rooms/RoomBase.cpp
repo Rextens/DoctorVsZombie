@@ -43,8 +43,8 @@ ARoomBase::ARoomBase()
 		TileMapComponent->SetRelativeLocation(FVector(Y * TileSize , 0.0f, 0.0f));
 	}
 
-	AddDoorLocation(FVector2D(2.0f, 2.0f), EDoorDirection::Top);
-	AddDoorLocation(FVector2D(34.0f, 67.0f), EDoorDirection::Top);
+	AddDoorLocation(FVector2D(22.0f, 22.0f), EDoorDirection::Top);
+	AddDoorLocation(FVector2D(54.0f, 87.0f), EDoorDirection::Top);
 }
 
 // Called when the game starts or when spawned

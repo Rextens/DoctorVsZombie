@@ -84,7 +84,7 @@ public:
 	UPROPERTY()
 	class ADoctorCharacter* CharacterReference;
 
-	FVector2D Spawn = FVector2D(18.0f, 46.0f);
+	FVector2D Spawn = FVector2D(66.0f, 66.0f);
 
 	int32 Hardness = 0;
 
