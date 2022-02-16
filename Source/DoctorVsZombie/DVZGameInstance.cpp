@@ -28,10 +28,13 @@
 #include "Character/Equipment/Items/BlueMedicine.h"
 #include "Character/Equipment/Items/SyringePistol.h"
 
+#include "World/Rooms/StartRoom.h"
+#include "World/Rooms/Room1.h"
+
 #include "World/ItemDropsManager.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "World/Rooms/StartRoom.h"
+
 
 
 void UDVZGameInstance::Init()
@@ -51,9 +54,9 @@ void UDVZGameInstance::Init()
 	RegisterItem("SyringePistol", USyringePistol::StaticClass());
 
 	RegisterRoom("StartRoom", AStartRoom::StaticClass());
-	RegisterRoom("Room1", ARoomBase::StaticClass());
-	RegisterRoom("Room2", ARoomBase::StaticClass());
-	RegisterRoom("Room3", ARoomBase::StaticClass());
+	RegisterRoom("Room1", ARoom1::StaticClass());
+	RegisterRoom("Room2", ARoom1::StaticClass());
+	RegisterRoom("Room3", ARoom1::StaticClass());
 
 
 	test = NewObject<UWeapon>();

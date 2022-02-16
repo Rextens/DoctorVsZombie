@@ -39,6 +39,16 @@ struct FDoor
 	ARoomBase* Room = nullptr;
 };
 
+USTRUCT()
+struct FZombieSpawn
+{
+	GENERATED_BODY()
+
+	FVector2D SpawnLocation;
+
+	bool IsUsed = false;
+};
+
 UCLASS()
 class DOCTORVSZOMBIE_API ARoomBase : public AActor
 {
@@ -52,6 +62,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void LoadTileMap(const FName& Path);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -61,6 +73,7 @@ public:
 	void DisableActor(const bool& Disable);
 
 	void SpawnZombies();
+	void AddSpawnLocation(const FVector2D& Tile);
 
 	void IsClearFromZombies();
 	
@@ -78,6 +91,8 @@ public:
 	TArray<class AZombieBase*> Zombies;
 
 	TArray<FDoor> Doors;
+
+	TArray<FZombieSpawn> PossibleSpawns;
 	
 	int32 TileSize = 32;
 
