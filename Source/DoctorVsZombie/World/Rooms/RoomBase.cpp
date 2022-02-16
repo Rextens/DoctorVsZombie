@@ -259,7 +259,7 @@ void ARoomBase::SpawnZombies()
 			{
 				FActorSpawnParameters SpawnParameters;
 				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-				for(int32 i = 0; i < RedMedicine - 1; ++i)
+				for(int32 i = 0; i < RedMedicine; ++i)
 				{
 					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ARedZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 				}
@@ -270,7 +270,7 @@ void ARoomBase::SpawnZombies()
 			{
 				FActorSpawnParameters SpawnParameters;
 				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-				for(int32 i = 0; i < GreenMedicine - 1; ++i)
+				for(int32 i = 0; i < GreenMedicine; ++i)
 				{
 					UKismetSystemLibrary::PrintString(GetWorld(), "dddddddddddddddd");
 					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(AGreenZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
@@ -283,7 +283,7 @@ void ARoomBase::SpawnZombies()
 			{
 				FActorSpawnParameters SpawnParameters;
 				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-				for(int32 i = 0; i < BlueMedicine - 1; ++i)
+				for(int32 i = 0; i < BlueMedicine; ++i)
 				{
 					AZombieBase* SpawnedZombie1 = GetWorld()->SpawnActor<AZombieBase>(ABlueZombie::StaticClass(), FVector(GetActualLocation().X + 64, Cast<UDVZGameInstance>(GetGameInstance())->Enemies.Num() * 64, 60), FRotator(0.0f, 0.0f, 0.0f), SpawnParameters);
 				}
