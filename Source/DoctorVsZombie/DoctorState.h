@@ -23,6 +23,7 @@ public:
 
 	int32 ChosenItem = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 HealthPoints = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
