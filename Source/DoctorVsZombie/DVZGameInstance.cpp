@@ -30,6 +30,7 @@
 
 #include "World/Rooms/StartRoom.h"
 #include "World/Rooms/Room1.h"
+#include "World/Rooms/Street.h"
 
 #include "World/ItemDropsManager.h"
 
@@ -54,9 +55,10 @@ void UDVZGameInstance::Init()
 	RegisterItem("SyringePistol", USyringePistol::StaticClass());
 
 	RegisterRoom("StartRoom", AStartRoom::StaticClass());
-	RegisterRoom("Room1", ARoom1::StaticClass());
-	RegisterRoom("Room2", ARoom1::StaticClass());
-	RegisterRoom("Room3", ARoom1::StaticClass());
+	//RegisterRoom("Room1", ARoom1::StaticClass());
+	//RegisterRoom("Room2", ARoom1::StaticClass());
+	//RegisterRoom("Room3", ARoom1::StaticClass());
+	RegisterRoom("Street1", AStreet::StaticClass());
 
 
 	test = NewObject<UWeapon>();

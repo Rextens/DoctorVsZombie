@@ -5,7 +5,7 @@
 
 ARoom1::ARoom1()
 {
-	LoadTileMap("/Game/Textures/Labo_TileMap");
+	LoadTileMap("/Game/Textures/Street_asset_TileMap1");
 	
 	AddDoorLocation(FVector2D(22.0f, 22.0f), EDoorDirection::Top);
 	AddDoorLocation(FVector2D(54.0f, 87.0f), EDoorDirection::Top);

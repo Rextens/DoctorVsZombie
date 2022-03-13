@@ -40,7 +40,7 @@ void ARoomBase::BeginPlay()
 
 void ARoomBase::LoadTileMap(const FName& Path)
 {
-	static ConstructorHelpers::FObjectFinder<UPaperTileMap> LoadedTileMap(*Path.ToString());
+	ConstructorHelpers::FObjectFinder<UPaperTileMap> LoadedTileMap(*Path.ToString());
 
 	if (LoadedTileMap.Object)
 	{
